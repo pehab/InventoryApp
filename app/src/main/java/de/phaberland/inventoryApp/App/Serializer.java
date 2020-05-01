@@ -27,7 +27,7 @@ public class Serializer {
     }
 
     public void writeLists(HashMap<Integer, ItemList> lists) {
-        File cacheDir = m_appContext.getCacheDir();
+        File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
 
@@ -68,7 +68,7 @@ public class Serializer {
 
 
     public HashMap<Integer,ItemList> readLists() {
-        File cacheDir = m_appContext.getCacheDir();
+        File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
 
@@ -111,7 +111,7 @@ public class Serializer {
     }
 
     public HashMap<Integer, Item> readAllItems() {
-        File cacheDir = m_appContext.getCacheDir();
+        File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
 
@@ -154,7 +154,7 @@ public class Serializer {
     }
 
     public void writeAllItems(HashMap<Integer, Item> m_allItems) {
-        File cacheDir = m_appContext.getCacheDir();
+        File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
 
