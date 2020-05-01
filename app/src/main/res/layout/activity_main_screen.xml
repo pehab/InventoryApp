@@ -7,6 +7,7 @@
     tools:context="de.phaberland.inventoryApp.Frontend.MainScreen">
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -21,18 +22,18 @@
 
             <ImageButton
                 android:id="@+id/settingsButton"
-                android:contentDescription="@string/desc_settings"
-                android:onClick="settingsButtonPressed"
-                app:layout_constraintDimensionRatio="1:1"
-                app:srcCompat="@android:drawable/ic_menu_preferences"
-                android:layout_height="52dp"
                 android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/desc_settings"
+                android:onClick="settingsButtonPressed"
+                app:layout_constraintDimensionRatio="1:1"
+                app:srcCompat="@android:drawable/ic_menu_preferences" />
 
             <Button
                 android:id="@+id/inventoryButton"
@@ -75,9 +76,9 @@
 
             <EditText
                 android:id="@+id/filter"
-                android:layout_gravity="fill_horizontal|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                android:layout_gravity="fill_horizontal|center_vertical"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"

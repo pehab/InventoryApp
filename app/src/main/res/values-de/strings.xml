@@ -35,7 +35,7 @@
     <string name="title_add_to_inventory">Füge Gegenstand zum Inventar hinzu</string>
     <string name="title_new_item">Erzeuge neuen Gegenstand</string>
     <string name="title_remove_amount">Entnehme Gegenstände aus dem Inventar</string>
-    <string name="title_add_amount">Füge Menge hinzu</string>
+    <string name="title_add_amount">Füge Menge zum Inventar hinzu</string>
 
     <string name="toast_switch_inv">Zum Inventar gewechselt</string>
     <string name="toast_switch_shop">Zur Einkaufsliste gewechselt</string>

@@ -1,5 +1,6 @@
 package de.phaberland.inventoryApp.Frontend;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -42,11 +44,26 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     // Activity Lifecycle //
     ////////////////////////
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        // add swipe listener
+        final LinearLayout mainScreen = findViewById(R.id.mainLayout);
+        if(mainScreen != null) {
+            mainScreen.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
+                public void onSwipeRight() {
+                    inventoryButtonPressed(mainScreen);
+                }
+                public void onSwipeLeft() {
+                    shoppingButtonPressed(mainScreen);
+                }
+            });
+        }
+
+        // add filter change handler
         EditText filter = findViewById(R.id.filter);
         filter.addTextChangedListener(new TextWatcher() {
             @Override
