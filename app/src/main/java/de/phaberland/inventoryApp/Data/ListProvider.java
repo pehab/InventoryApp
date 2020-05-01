@@ -61,10 +61,11 @@ public class ListProvider {
         ItemList filteredList = new ItemList(true);
         for (HashMap.Entry<Integer, Integer> entry : list.entrySet()) {
             Item item = ItemProvider.getInstance().getItemById(entry.getKey());
-            String name =  item.getM_name().toLowerCase();
-            if(item != null &&
-                name.contains(filter.toLowerCase())) {
-                filteredList.add(entry.getKey(), entry.getValue());
+            if(item != null) {
+                String name =  item.getM_name().toLowerCase();
+                if(name.contains(filter.toLowerCase())) {
+                    filteredList.add(entry.getKey(), entry.getValue());
+                }
             }
         }
         return filteredList;

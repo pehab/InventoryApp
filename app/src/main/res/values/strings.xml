@@ -4,7 +4,7 @@
     <string name="button_inv">Inventory</string>
     <string name="button_shop">Shopping</string>
     <string name="button_add_remove">+/-</string>
-    <string name="button_ok">ok</string>
+    <string name="button_ok">OK</string>
     <string name="button_add">Add</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_new">New</string>
@@ -34,7 +34,7 @@
     <string name="title_add_to_inventory">Add item to inventory</string>
     <string name="title_new_item">Create new Item</string>
     <string name="title_remove_amount">Remove items from inventory</string>
-    <string name="title_add_amount">Remove items from inventory</string>
+    <string name="title_add_amount">Add Amount</string>
 
     <string name="toast_switch_inv">Switched to inventory</string>
     <string name="toast_switch_shop">Switched to shopping</string>

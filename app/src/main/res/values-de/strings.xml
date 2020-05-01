@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Inventar Verwaltung</string>
+
+    <string name="button_inv">Inventar</string>
+    <string name="button_shop">Einkaufsliste</string>
+    <string name="button_add_remove">+/-</string>
+    <string name="button_ok">OK</string>
+    <string name="button_add">Hinzufügen</string>
+    <string name="button_cancel">Abbrechen</string>
+    <string name="button_new">Neu</string>
+    <string name="button_yes">Ja</string>
+    <string name="button_no">Nein</string>
+    <string name="button_remove">Entfernen</string>
+
+    <string name="desc_settings">Einstellungen öffnen</string>
+    <string name="desc_addItem">Gegenstand hinzufügen</string>
+
+    <string name="label_filter">Filter</string>
+    <string name="label_name">Name</string>
+    <string name="label_unit">Einheit</string>
+    <string name="label_default">Standard Einkaufsmenge</string>
+    <string name="label_crit">Kritische Menge</string>
+    <string name="label_optional">(optional)</string>
+
+    <string name="msg_no_items">Derzeit keine Gegenstände definiert</string>
+    <string name="msg_replace_values">Der Gegenstand existiert bereits, wollen sie Kritische oder Default Werte überschreiben?</string>
+
+    <string name="tag_add_to_inv_dlg">AddToInventory</string>
+    <string name="tag_add_to_shop_dlg">AddToShopping</string>
+    <string name="tag_new_item_dlg">NewItemDlg</string>
+    <string name="tag_remove_item_dlg">RemoveAmountDlg</string>
+    <string name="tag_add_item_dlg">RemoveAmountDlg</string>
+
+    <string name="title_add_to_inventory">Füge Gegenstand zum Inventar hinzu</string>
+    <string name="title_new_item">Erzeuge neuen Gegenstand</string>
+    <string name="title_remove_amount">Entnehme Gegenstände aus dem Inventar</string>
+    <string name="title_add_amount">Füge Menge hinzu</string>
+
+    <string name="toast_switch_inv">Zum Inventar gewechselt</string>
+    <string name="toast_switch_shop">Zur Einkaufsliste gewechselt</string>
+    <string name="toast_no_settings">Einstellungen noch nicht implementiert!</string>
+</resources>
