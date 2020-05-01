@@ -44,24 +44,13 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     // Activity Lifecycle //
     ////////////////////////
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
         // add swipe listener
-        final LinearLayout mainScreen = findViewById(R.id.mainLayout);
-        if(mainScreen != null) {
-            mainScreen.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
-                public void onSwipeRight() {
-                    inventoryButtonPressed(mainScreen);
-                }
-                public void onSwipeLeft() {
-                    shoppingButtonPressed(mainScreen);
-                }
-            });
-        }
+        addSwipeListener();
 
         // add filter change handler
         EditText filter = findViewById(R.id.filter);
@@ -78,6 +67,32 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
                 updateList();
             }
         });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void addSwipeListener() {
+        final LinearLayout mainScreen = findViewById(R.id.mainLayout);
+        if(mainScreen != null) {
+            mainScreen.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
+                public void onSwipeRight() {
+                    inventoryButtonPressed(mainScreen);
+                }
+                public void onSwipeLeft() {
+                    shoppingButtonPressed(mainScreen);
+                }
+            });
+        }
+        final View mainTable = findViewById(R.id.mainTable);
+        if(mainScreen != null) {
+            mainScreen.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
+                public void onSwipeRight() {
+                    inventoryButtonPressed(mainTable);
+                }
+                public void onSwipeLeft() {
+                    shoppingButtonPressed(mainTable);
+                }
+            });
+        }
     }
 
     @Override
