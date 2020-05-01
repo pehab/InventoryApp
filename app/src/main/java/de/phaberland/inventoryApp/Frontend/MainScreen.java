@@ -50,7 +50,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         setContentView(R.layout.activity_main_screen);
 
         // add swipe listener
-        addSwipeListener();
+        addSwipeListener(findViewById(R.id.mainLayout));
 
         // add filter change handler
         EditText filter = findViewById(R.id.filter);
@@ -67,32 +67,6 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
                 updateList();
             }
         });
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void addSwipeListener() {
-        final LinearLayout mainScreen = findViewById(R.id.mainLayout);
-        if(mainScreen != null) {
-            mainScreen.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
-                public void onSwipeRight() {
-                    inventoryButtonPressed(mainScreen);
-                }
-                public void onSwipeLeft() {
-                    shoppingButtonPressed(mainScreen);
-                }
-            });
-        }
-        final View mainTable = findViewById(R.id.mainTable);
-        if(mainScreen != null) {
-            mainScreen.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
-                public void onSwipeRight() {
-                    inventoryButtonPressed(mainTable);
-                }
-                public void onSwipeLeft() {
-                    shoppingButtonPressed(mainTable);
-                }
-            });
-        }
     }
 
     @Override
@@ -140,6 +114,20 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     ///////////////////////////
     // Handle Button Presses //
     ///////////////////////////
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void addSwipeListener(final View view) {
+        if(view != null) {
+            view.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
+                public void onSwipeRight() {
+                    inventoryButtonPressed(view);
+                }
+                public void onSwipeLeft() {
+                    shoppingButtonPressed(view);
+                }
+            });
+        }
+    }
 
     public void addButtonPressed(View view) {
         if(m_listId == ItemList.INVENTORY_LIST_ID) {
@@ -208,6 +196,8 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         ItemList listToDisplay = ListProvider.getInstance().getFilteredList(m_listId, m_filter);
         m_list.removeAllViews();
 
+        addSwipeListener(m_list);
+
         if(listToDisplay == null || listToDisplay.getM_content().isEmpty()) {
             return;
         }
@@ -218,6 +208,8 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         table.setLayoutParams(lpTable);
+
+        addSwipeListener(table);
 
         table.setStretchAllColumns(true);
 
