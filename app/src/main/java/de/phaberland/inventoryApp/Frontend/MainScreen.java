@@ -18,9 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import de.phaberland.inventoryApp.App.EventHandler;
 import de.phaberland.inventoryApp.App.InventoryApp;
