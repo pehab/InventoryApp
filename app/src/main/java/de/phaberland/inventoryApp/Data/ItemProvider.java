@@ -64,4 +64,8 @@ public class ItemProvider {
     public HashMap<Integer,Item> getAllItems() {
         return m_allItems;
     }
+
+    public int getNextId() {
+        return m_allItems.size();
+    }
 }

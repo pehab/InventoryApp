@@ -74,4 +74,8 @@ public class ListProvider {
     private void addList(ItemList list) {
         m_allLists.put(list.getId(), list);
     }
+
+    public int getNextId() {
+        return m_allLists.size();
+    }
 }

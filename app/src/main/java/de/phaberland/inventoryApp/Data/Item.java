@@ -11,7 +11,6 @@ public class Item implements Serializable {
         MILILITER,
         PIECE
     }
-    private static int nextId = 0;
     private int m_id;
     private String m_name;
     private int m_critValue;
@@ -19,7 +18,7 @@ public class Item implements Serializable {
     private UNIT m_unit;
 
     Item(String name, UNIT unit) {
-        m_id = nextId++;
+        m_id = ItemProvider.getInstance().getNextId();
         m_name = name;
         m_unit = unit;
         int tmp = 1;
@@ -80,7 +79,6 @@ public class Item implements Serializable {
         if(m_defValue <= 0) {
             m_defValue = tmp;
         }
-        nextId++;
     }
 
     private void writeObject(ObjectOutputStream aOutputStream) throws IOException {

@@ -89,7 +89,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         m_app.init();
 
         // possibly load initial item list
-        if(ItemProvider.getInstance().getAllItems().size() == 0) {
+        if(ItemProvider.getInstance().getAllItems().isEmpty()) {
             String[] initialItems = getResources().getStringArray(R.array.initial_items);
             for(String itemName: initialItems) {
                 String unitIndex =  itemName.substring(0,1);

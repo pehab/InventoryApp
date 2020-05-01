@@ -10,7 +10,6 @@ public class ItemList implements Serializable {
     public static final int INVENTORY_LIST_ID = 0;
     public static final int SHOPPING_LIST_ID = 1;
 
-    private static int nextId = 0;
     private int id;
     //private String m_name;
     private HashMap<Integer, Integer> m_content;
@@ -19,7 +18,7 @@ public class ItemList implements Serializable {
         if(bTemp) {
             id = -1;
         } else {
-            id = nextId++;
+            id = ListProvider.getInstance().getNextId();
         }
 
         /*if(id == 0) {
@@ -59,6 +58,7 @@ public class ItemList implements Serializable {
         } else {
             m_content.put(itemId, amount);
         }
+         checkAddToShopping(itemId, amount);
     }
 
     public void remove(int itemId) {
@@ -75,14 +75,18 @@ public class ItemList implements Serializable {
                 m_content.put(itemId, newAmount);
             }
 
-            if(newAmount <= ItemProvider.getInstance().getItemById(itemId).getM_critValue() &&
-                    id == INVENTORY_LIST_ID) {
-                if(ListProvider.getInstance().getListById(SHOPPING_LIST_ID).hasItem(itemId)) {
-                    return;
-                }
-                ListProvider.getInstance().getListById(SHOPPING_LIST_ID).add(itemId,0);
-            }
+            checkAddToShopping(itemId, newAmount);
 
+        }
+    }
+
+    private void checkAddToShopping(int itemId, int newAmount) {
+        if(newAmount <= ItemProvider.getInstance().getItemById(itemId).getM_critValue() &&
+                id == INVENTORY_LIST_ID) {
+            if(ListProvider.getInstance().getListById(SHOPPING_LIST_ID).hasItem(itemId)) {
+                return;
+            }
+            ListProvider.getInstance().getListById(SHOPPING_LIST_ID).add(itemId,0);
         }
     }
 
@@ -100,7 +104,6 @@ public class ItemList implements Serializable {
 
     private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException {
         m_content = (HashMap<Integer, Integer>)aInputStream.readObject();
-        nextId++;
     }
 
     private void writeObject(ObjectOutputStream aOutputStream) throws IOException {
