@@ -105,6 +105,9 @@ public class CreateItemDialog extends DialogFragment {
 
     private View createValuePart(DialogPart part) {
         LinearLayout valueView = new LinearLayout(getContext());
+        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(16,16,16,16);
+        valueView.setLayoutParams(params);
         valueView.setGravity(Gravity.END);
         switch (part) {
             case NAME: {
@@ -145,18 +148,31 @@ public class CreateItemDialog extends DialogFragment {
     private void handlePositiveButton() {
         Item.UNIT unit = Item.UNIT.values()[m_Unit.getSelectedItemPosition()];
         String name = m_Name.getText().toString();
-        int def = Integer.parseInt(m_Default.getText().toString());
-        int crit = Integer.parseInt(m_Crit.getText().toString());
+        String txt = m_Default.getText().toString();
+        int def = -1;
+        if(!txt.isEmpty()) {
+            def = Integer.parseInt(txt);
+        }
+        int crit = -1;
+        txt = m_Crit.getText().toString();
+        if(!txt.isEmpty()) {
+            crit = Integer.parseInt(txt);
+        }
         int m_existingItemId = ItemProvider.getInstance().findExistingItem(name, unit);
         if(m_existingItemId == -1) {
             m_existingItemId = ItemProvider.getInstance().addItem(name, unit);
             Item item = ItemProvider.getInstance().getItemById(m_existingItemId);
-            item.setM_defValue(def);
-            item.setM_critValue(crit);
+            if(def != -1) {
+                item.setM_defValue(def);
+            }
+            if(crit != -1) {
+                item.setM_critValue(crit);
+            }
         } else {
             Item item = ItemProvider.getInstance().getItemById(m_existingItemId);
 
-            if(item.getM_critValue() != crit || item.getM_defValue() != def) {
+            if((crit != -1 || def != -1) &&
+                    (item.getM_critValue() != crit || item.getM_defValue() != def)) {
                 // update values?
                 updateValues(item, def, crit);
             }
@@ -171,8 +187,12 @@ public class CreateItemDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {//Yes button clicked
-                    item.setM_critValue(crit);
-                    item.setM_defValue(def);
+                    if(crit != -1) {
+                        item.setM_critValue(crit);
+                    }
+                    if(def != -1) {
+                        item.setM_defValue(def);
+                    }
                 }
             }
         };
