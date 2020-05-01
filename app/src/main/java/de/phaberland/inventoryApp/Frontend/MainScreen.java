@@ -228,6 +228,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
                     break;
             }
             table.addView(tr);
+            addSwipeListener(tr);
         }
         m_list.addView(table);
     }
