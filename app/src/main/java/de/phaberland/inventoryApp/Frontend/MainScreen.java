@@ -115,20 +115,6 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     // Handle Button Presses //
     ///////////////////////////
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void addSwipeListener(final View view) {
-        if(view != null) {
-            view.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
-                public void onSwipeRight() {
-                    inventoryButtonPressed(view);
-                }
-                public void onSwipeLeft() {
-                    shoppingButtonPressed(view);
-                }
-            });
-        }
-    }
-
     public void addButtonPressed(View view) {
         if(m_listId == ItemList.INVENTORY_LIST_ID) {
             m_addToInvDlg = new AddToInventoryDialog(this);
@@ -187,6 +173,52 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     ////////////////
     // List draws //
     ////////////////
+    @SuppressLint("ClickableViewAccessibility")
+    private void addSwipeListener(final View view) {
+        if(view != null) {
+            view.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
+                public void onSwipeRight() {
+                    inventoryButtonPressed(view);
+                }
+                public void onSwipeLeft() {
+                    shoppingButtonPressed(view);
+                }
+            });
+        }
+    }
+
+    View addTextField(String name) {
+        TableRow.LayoutParams colParams = new TableRow.LayoutParams();
+        colParams.setMargins(0, 0, 1, 0);
+
+        TextView textField= new TextView(this);
+        textField.setText(name);
+        textField.setGravity(Gravity.CENTER);
+        textField.setLayoutParams(colParams);
+        textField.setPadding(3, 3, 3, 3);
+        addSwipeListener(textField);
+        return textField;
+    }
+
+    View addButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
+        TableRow.LayoutParams colParams = new TableRow.LayoutParams();
+        colParams.setMargins(0, 0, 1, 0);
+
+        Button button = new Button(this);
+        button.setText(txt);
+        button.setGravity(Gravity.CENTER);
+        button.setLayoutParams(colParams);
+        button.setPadding(3, 3, 3, 3);
+        EventHandler.EventHandlerParams params = new EventHandler.EventHandlerParams();
+        params.m_mode = mode;
+        params.m_callback = this;
+        params.m_itemId = itemId;
+        params.m_activity = this;
+
+        button.setOnClickListener(new EventHandler(params));
+        addSwipeListener(button);
+        return button;
+    }
 
     /* updateList
      * this function will get the list, that should be displayed from the app
@@ -241,10 +273,8 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         TableRow tr = new TableRow(this);
 
         TableLayout.LayoutParams rowParams = new TableLayout.LayoutParams();
-        TableRow.LayoutParams colParams = new TableRow.LayoutParams();
 
         rowParams.setMargins(0, 0, 0, 1);
-        colParams.setMargins(0, 0, 1, 0);
 
         tr.setLayoutParams(rowParams);
 
@@ -253,35 +283,13 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         }
 
         // add name of item
-        TextView textName= new TextView(this);
-        textName.setText(item.getM_name());
-        textName.setGravity(Gravity.CENTER);
-        textName.setLayoutParams(colParams);
-        textName.setPadding(3, 3, 3, 3);
-        tr.addView(textName);
+        tr.addView(addTextField(item.getM_name()));
 
         // add amount of item
-        TextView textAmount= new TextView(this);
-        textAmount.setText(String.format(getResources().getConfiguration().locale,"%d", amount));
-        textAmount.setGravity(Gravity.CENTER);
-        textAmount.setLayoutParams(colParams);
-        textAmount.setPadding(3, 3, 3, 3);
-        tr.addView(textAmount);
+        tr.addView(addTextField(String.format(getResources().getConfiguration().locale,"%d", amount)));
 
         // add +/- button
-        Button button = new Button(this);
-        button.setText(R.string.button_add_remove);
-        button.setGravity(Gravity.CENTER);
-        button.setLayoutParams(colParams);
-        button.setPadding(3, 3, 3, 3);
-        EventHandler.EventHandlerParams params = new EventHandler.EventHandlerParams();
-        params.m_mode = EventHandler.EventHandlerMode.INVENTORYLISTCLICK;
-        params.m_callback = this;
-        params.m_itemId = item.getM_id();
-        params.m_activity = this;
-
-        button.setOnClickListener(new EventHandler(params));
-        tr.addView(button);
+        tr.addView(addButton(EventHandler.EventHandlerMode.INVENTORYLISTCLICK, item.getM_id(), getString(R.string.button_add_remove)));
 
         return tr;
     }
@@ -294,50 +302,19 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         TableRow tr = new TableRow(this);
 
         TableLayout.LayoutParams rowParams = new TableLayout.LayoutParams();
-        TableRow.LayoutParams colParams = new TableRow.LayoutParams();
 
         rowParams.setMargins(0, 0, 0, 1);
-        colParams.setMargins(0, 0, 1, 0);
 
         tr.setLayoutParams(rowParams);
 
         // add name of item
-        TextView textName= new TextView(this);
-        textName.setText(item.getM_name());
-        textName.setGravity(Gravity.CENTER);
-        textName.setLayoutParams(colParams);
-        textName.setPadding(3, 3, 3, 3);
-        tr.addView(textName);
+        tr.addView(addTextField(item.getM_name()));
 
         // add remove button
-        Button button = new Button(this);
-        button.setText(R.string.button_remove);
-        button.setGravity(Gravity.CENTER);
-        button.setLayoutParams(colParams);
-        button.setPadding(3, 3, 3, 3);
-        EventHandler.EventHandlerParams params = new EventHandler.EventHandlerParams();
-        params.m_mode = EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICKED;
-        params.m_callback = this;
-        params.m_itemId = item.getM_id();
-        params.m_activity = this;
-
-        button.setOnClickListener(new EventHandler(params));
-        tr.addView(button);
+        tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICKED, item.getM_id(), getString(R.string.button_remove)));
 
         // add add button
-        Button button1 = new Button(this);
-        button1.setText(R.string.button_add);
-        button1.setGravity(Gravity.CENTER);
-        button1.setLayoutParams(colParams);
-        button1.setPadding(3, 3, 3, 3);
-        EventHandler.EventHandlerParams params1 = new EventHandler.EventHandlerParams();
-        params1.m_mode = EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK;
-        params1.m_callback = this;
-        params1.m_itemId = item.getM_id();
-        params1.m_activity = this;
-
-        button1.setOnClickListener(new EventHandler(params1));
-        tr.addView(button1);
+        tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK, item.getM_id(), getString(R.string.button_add)));
 
         return tr;
     }
