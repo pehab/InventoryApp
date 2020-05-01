@@ -40,4 +40,15 @@
     <string name="toast_switch_inv">Zum Inventar gewechselt</string>
     <string name="toast_switch_shop">Zur Einkaufsliste gewechselt</string>
     <string name="toast_no_settings">Einstellungen noch nicht implementiert!</string>
+
+    <string-array name="initial_items">
+        <item>0Mehl</item>
+        <item>2Eier</item>
+        <item>0Zucker</item>
+        <item>1Milch</item>
+        <item>1Wasser</item>
+        <item>2Bier</item>
+        <item>0Kartoffeln</item>
+        <item>2Apfel</item>
+    </string-array>
 </resources>

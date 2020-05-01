@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,17 +18,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import de.phaberland.inventoryApp.App.EventHandler;
 import de.phaberland.inventoryApp.App.InventoryApp;
-import de.phaberland.inventoryApp.Interfaces.EventCallback;
-import de.phaberland.inventoryApp.R;
-
-import java.util.HashMap;
-
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemList;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Data.ListProvider;
+import de.phaberland.inventoryApp.Interfaces.EventCallback;
+import de.phaberland.inventoryApp.R;
 
 public class MainScreen extends AppCompatActivity implements EventCallback {
     private ScrollView m_list;
@@ -89,6 +89,22 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         // initialize main app
         m_app = new InventoryApp(getApplicationContext());
         m_app.init();
+
+        // possibly load initial item list
+        if(ItemProvider.getInstance().getAllItems().size() == 0) {
+            String[] initialItems = getResources().getStringArray(R.array.initial_items);
+            for(String itemName: initialItems) {
+                String unitIndex =  itemName.substring(0,1);
+                itemName =  itemName.substring(1);
+                Item.UNIT unit;
+                switch (unitIndex) {
+                    case "0": unit = Item.UNIT.GRAMM; break;
+                    case "1": unit = Item.UNIT.MILILITER; break;
+                    default: unit = Item.UNIT.PIECE; break;
+                }
+                ItemProvider.getInstance().addItem(itemName, unit);
+            }
+        }
 
         // set up initial layout
         m_list = findViewById(R.id.mainTable);

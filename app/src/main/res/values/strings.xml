@@ -39,4 +39,15 @@
     <string name="toast_switch_inv">Switched to inventory</string>
     <string name="toast_switch_shop">Switched to shopping</string>
     <string name="toast_no_settings">Settings not implemented yet!</string>
+
+    <string-array name="initial_items">
+        <item>0Flour</item>
+        <item>2Eggs</item>
+        <item>0Sugar</item>
+        <item>1Milk</item>
+        <item>1Water</item>
+        <item>2Beer</item>
+        <item>0Potato</item>
+        <item>2Apple</item>
+    </string-array>
 </resources>
