@@ -1,5 +1,8 @@
 package de.phaberland.inventoryApp.Frontend;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -19,12 +22,14 @@ import de.phaberland.inventoryApp.App.ItemListAdapter;
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 
+import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
-class DialogFragmentProvider {
+public class DialogFragmentProvider {
     static class AmountControls {
         EditText editText;
         LinearLayout layout;
@@ -146,5 +151,20 @@ class DialogFragmentProvider {
 
         controls.layout.addView(newItemButton);
         return controls;
+    }
+
+    public static void createSimpleYesNoDialog(String msg, final YesNoCallback callback, Context context) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {//Yes button clicked
+                   callback.yesClicked();
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg).setPositiveButton(R.string.button_yes, dialogClickListener)
+                .setNegativeButton(R.string.button_no, dialogClickListener).show();
     }
 }

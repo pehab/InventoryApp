@@ -21,9 +21,10 @@ import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Interfaces.DialogCallback;
 
+import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
 
-public class CreateItemDialog extends DialogFragment {
+public class CreateItemDialog extends DialogFragment implements YesNoCallback {
     private enum DialogPart {
         NAME,
         UNIT,
@@ -174,7 +175,10 @@ public class CreateItemDialog extends DialogFragment {
             if((crit != -1 || def != -1) &&
                     (item.getM_critValue() != crit || item.getM_defValue() != def)) {
                 // update values?
-                updateValues(item, def, crit);
+               DialogFragmentProvider.createSimpleYesNoDialog(
+                       getString(R.string.msg_replace_values),
+                       this,
+                       getContext());
             }
         }
         if(m_callback != null) {
@@ -182,24 +186,28 @@ public class CreateItemDialog extends DialogFragment {
         }
     }
 
-    private void updateValues(final Item item, final int def, final int crit) {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {//Yes button clicked
-                    if(crit != -1) {
-                        item.setM_critValue(crit);
-                    }
-                    if(def != -1) {
-                        item.setM_defValue(def);
-                    }
-                }
-            }
-        };
+    @Override
+    public void yesClicked() {
+        Item.UNIT unit = Item.UNIT.values()[m_Unit.getSelectedItemPosition()];
+        String name = m_Name.getText().toString();
+        Item item = ItemProvider.getInstance().getItemById(ItemProvider.getInstance().findExistingItem(name, unit));
+        String txt = m_Default.getText().toString();
+        int def = -1;
+        if(!txt.isEmpty()) {
+            def = Integer.parseInt(txt);
+        }
+        int crit = -1;
+        txt = m_Crit.getText().toString();
+        if(!txt.isEmpty()) {
+            crit = Integer.parseInt(txt);
+        }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(R.string.msg_replace_values).setPositiveButton(R.string.button_yes, dialogClickListener)
-                .setNegativeButton(R.string.button_no, dialogClickListener).show();
+        if(crit != -1) {
+            item.setM_critValue(crit);
+        }
+        if(def != -1) {
+            item.setM_defValue(def);
+        }
     }
 
     ///////////////////

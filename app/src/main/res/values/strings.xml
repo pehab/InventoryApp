@@ -24,6 +24,7 @@
 
     <string name="msg_no_items">NO ITEMS AVAILABLE YET</string>
     <string name="msg_replace_values">Item already exists, you want to replace Default and Critical Values?</string>
+    <string name="msg_are_your_sure">Are you sure?</string>
 
     <string name="tag_add_to_inv_dlg">AddToInventory</string>
     <string name="tag_add_to_shop_dlg">AddToShopping</string>

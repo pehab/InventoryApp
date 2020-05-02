@@ -25,6 +25,7 @@
 
     <string name="msg_no_items">Derzeit keine Gegenstände definiert</string>
     <string name="msg_replace_values">Der Gegenstand existiert bereits, wollen sie Kritische oder Default Werte überschreiben?</string>
+    <string name="msg_are_your_sure">Sind sie sicher?</string>
 
     <string name="tag_add_to_inv_dlg">AddToInventory</string>
     <string name="tag_add_to_shop_dlg">AddToShopping</string>

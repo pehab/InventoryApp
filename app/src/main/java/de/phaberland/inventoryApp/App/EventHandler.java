@@ -4,17 +4,18 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import de.phaberland.inventoryApp.R;
-
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemList;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Data.ListProvider;
 import de.phaberland.inventoryApp.Frontend.AddFromShoppingDialog;
+import de.phaberland.inventoryApp.Frontend.DialogFragmentProvider;
 import de.phaberland.inventoryApp.Frontend.RemoveFromInventoryDialog;
 import de.phaberland.inventoryApp.Interfaces.EventCallback;
+import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
+import de.phaberland.inventoryApp.R;
 
-public class EventHandler implements View.OnClickListener {
+public class EventHandler implements View.OnClickListener, YesNoCallback {
 
     public enum EventHandlerMode {
         INVENTORYLISTCLICK,
@@ -54,6 +55,16 @@ public class EventHandler implements View.OnClickListener {
     }
 
     private void onShoppingButtonRemoveClicked() {
+        DialogFragmentProvider.createSimpleYesNoDialog(
+                m_params.m_activity.getString(R.string.msg_are_your_sure),
+                this,
+                m_params.m_activity
+        );
+
+    }
+
+    @Override
+    public void yesClicked() {
         ListProvider.getInstance().getListById(ItemList.SHOPPING_LIST_ID).remove(m_params.m_itemId);
         if(m_params.m_callback != null) {
             m_params.m_callback.update();
