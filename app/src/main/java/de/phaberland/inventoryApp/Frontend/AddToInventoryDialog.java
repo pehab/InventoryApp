@@ -63,6 +63,10 @@ public class AddToInventoryDialog extends DialogFragment implements DialogCallba
         createItemSelection();
         m_mainLayout.addView(m_ItemLayout);
 
+        // create initial amount
+        createAmountChoosing();
+        m_mainLayout.addView(m_AmountLayout);
+
         builder.setView(m_mainLayout);
 
         // set buttonss

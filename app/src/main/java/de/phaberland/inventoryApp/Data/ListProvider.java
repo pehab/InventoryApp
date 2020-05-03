@@ -1,7 +1,7 @@
 package de.phaberland.inventoryApp.Data;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 
 import java.util.HashMap;
 
@@ -10,7 +10,7 @@ import de.phaberland.inventoryApp.App.Serializer;
 public class ListProvider {
     @SuppressLint("StaticFieldLeak")
     private static ListProvider instance = null;
-    private Context m_context;
+    private Activity m_activity;
     private HashMap<Integer,ItemList> m_allLists;
 
     public static ListProvider getInstance() {
@@ -20,15 +20,15 @@ public class ListProvider {
         return instance;
     }
 
-    public static void init(Context context) {
+    public static void init(Activity activity) {
         if(instance == null) {
             instance = new ListProvider();
         }
 
-        instance.m_context = context;
+        instance.m_activity = activity;
         instance.m_allLists = new HashMap<>();
 
-        Serializer ser = new Serializer(instance.m_context);
+        Serializer ser = new Serializer(instance.m_activity);
 
         instance.m_allLists = ser.readLists();
         if(instance.m_allLists.isEmpty()) {
@@ -38,9 +38,16 @@ public class ListProvider {
     }
 
     public static void deinit() {
-        Serializer ser = new Serializer(instance.m_context);
+        Serializer ser = new Serializer(instance.m_activity);
 
         ser.writeLists(instance.m_allLists);
+    }
+
+    public void clear() {
+        m_allLists.clear();
+        // we always want to have inventory and shopping list.
+        addList(new ItemList());
+        addList(new ItemList());
     }
 
     public ItemList getListById(int id) {
@@ -75,7 +82,7 @@ public class ListProvider {
         m_allLists.put(list.getId(), list);
     }
 
-    public int getNextId() {
+    int getNextId() {
         return m_allLists.size();
     }
 }

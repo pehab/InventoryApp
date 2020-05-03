@@ -53,7 +53,7 @@ public class Item implements Serializable {
         this.m_defValue = m_defValue;
     }
 
-    UNIT getM_unit() {
+    public UNIT getM_unit() {
         return m_unit;
     }
 
@@ -72,11 +72,11 @@ public class Item implements Serializable {
         }
 
         m_critValue = aInputStream.readInt();
-        if(m_critValue <= 0) {
+        if(m_critValue < 0) {
             m_critValue = tmp;
         }
         m_defValue = aInputStream.readInt();
-        if(m_defValue <= 0) {
+        if(m_defValue < 0) {
             m_defValue = tmp;
         }
     }

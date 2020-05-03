@@ -1,16 +1,16 @@
 package de.phaberland.inventoryApp.Data;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 
 import java.util.HashMap;
 
 import de.phaberland.inventoryApp.App.Serializer;
 
-public class ItemProvider {
+public class ItemProvider{
     @SuppressLint("StaticFieldLeak")
     private static ItemProvider instance = null;
-    private Context m_context;
+    private Activity m_activity;
     private HashMap<Integer,Item> m_allItems;
 
     public static ItemProvider getInstance() {
@@ -20,20 +20,24 @@ public class ItemProvider {
         return instance;
     }
 
-    public static void init(Context context) {
+    public static void init(Activity activity) {
         if(instance == null) {
             instance = new ItemProvider();
         }
 
-        instance.m_context = context;
+        instance.m_activity = activity;
 
-        Serializer ser = new Serializer(instance.m_context);
+        Serializer ser = new Serializer(instance.m_activity);
         instance.m_allItems = ser.readAllItems();
     }
 
     public static void deinit() {
-        Serializer ser = new Serializer(instance.m_context);
+        Serializer ser = new Serializer(instance.m_activity);
         ser.writeAllItems(instance.m_allItems);
+    }
+
+    public void clear() {
+        m_allItems.clear();
     }
 
     public int findExistingItem(String name, Item.UNIT unit) {
@@ -65,7 +69,7 @@ public class ItemProvider {
         return m_allItems;
     }
 
-    public int getNextId() {
+    int getNextId() {
         return m_allItems.size();
     }
 }

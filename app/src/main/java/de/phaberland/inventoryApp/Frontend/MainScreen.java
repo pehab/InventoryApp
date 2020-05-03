@@ -85,7 +85,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
     private void init() {
         // initialize main app
-        m_app = new InventoryApp(getApplicationContext());
+        m_app = new InventoryApp(this);
         m_app.init();
 
         // possibly load initial item list
@@ -146,6 +146,8 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
      */
     public void settingsButtonPressed(View view) {
         // Todo: create intent to switch to settings activity
+        m_app.importCsv();
+
         Toast.makeText(this.getApplicationContext(), R.string.toast_no_settings, Toast.LENGTH_SHORT).show();
     }
 
@@ -292,12 +294,13 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
         tr.setLayoutParams(rowParams);
 
-        if(item.getM_critValue() > amount) {
+        if(item.getM_critValue() >= amount) {
             tr.setBackgroundColor(Color.RED);
         }
 
         // add name of item
-        tr.addView(addTextField(item.getM_name()));
+        tr.addView(addTextField(item.getM_name() +
+                " (" + item.getM_unit().toString() + ")"));
 
         // add amount of item
         tr.addView(addTextField(String.format(getResources().getConfiguration().locale,"%d", amount)));
