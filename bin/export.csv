@@ -1,35 +1,35 @@
 0,Apfel,PIECE,2,6,-1,-1
-0,Bier,PIECE,3,20,16,-1
-0,Brot(Scheiben),PIECE,4,7,7,-1
-0,Butter,PIECE,1,1,3,-1
-0,Butter(echt),GRAMM,0,250,250,-1
-0,Calipo Cola,PIECE,0,5,0,-1
-0,Couscous,PIECE,0,1,4,-1
-0,Eier,PIECE,1,6,1,-1
-0,Haferflocken,GRAMM,200,500,700,-1
-0,Instant Nudeln,PIECE,1,1,6,-1
-0,Kartoffeln,GRAMM,1000,1500,-1,-1
-0,Kili Mittagessen,PIECE,3,10,10,-1
-0,Klopapier,PIECE,4,8,20,-1
-0,Knoblauch,PIECE,1,6,2,-1
-0,Magnum,PIECE,0,3,2,-1
-0,Mehl,GRAMM,1000,1000,1000,-1
-0,Milch,MILILITER,1000,1000,-1,-1
-0,Milch Pulver,PIECE,0,1,2,-1
-0,Nutella,PIECE,0,1,1,-1
-0,Oatly,PIECE,2,6,8,-1
-0,Oatly Kakao,PIECE,2,6,5,-1
-0,Olivenöl,PIECE,0,1,0,0
-0,Pastagenuss,PIECE,1,1,3,-1
-0,Porridge,GRAMM,100,375,475,-1
-0,Rapsöl,PIECE,0,1,1,-1
-0,Reibegenuss,PIECE,1,1,2,-1
-0,Sonnenblumenöl,PIECE,0,1,2,-1
-0,Spaghetti,GRAMM,250,500,1000,-1
-0,Spezi,PIECE,3,20,16,-1
-0,Wasser,PIECE,2,6,-1,-1
-0,Wiener,PIECE,2,8,9,-1
-0,Zewa,PIECE,2,3,5,-1
-0,Zucker,GRAMM,1000,1000,1000,-1
-0,Zwieback,PIECE,0,1,1,-1
-0,Zwiebeln,PIECE,2,10,4,-1
+1,Bier,PIECE,3,20,16,-1
+2,Brot(Scheiben),PIECE,4,7,7,-1
+3,Butter,PIECE,1,1,3,-1
+4,Butter(echt),GRAMM,0,250,250,-1
+5,Calipo Cola,PIECE,0,5,0,-1
+6,Couscous,PIECE,0,1,4,-1
+7,Eier,PIECE,1,6,1,-1
+8,Haferflocken,GRAMM,200,500,700,-1
+9,Instant Nudeln,PIECE,1,1,6,-1
+10,Kartoffeln,GRAMM,1000,1500,-1,-1
+11,Kili Mittagessen,PIECE,3,10,10,-1
+12,Klopapier,PIECE,4,8,20,-1
+13,Knoblauch,PIECE,1,6,2,-1
+14,Magnum,PIECE,0,3,2,-1
+15,Mehl,GRAMM,1000,1000,1000,-1
+16,Milch,MILILITER,1000,1000,-1,-1
+17,Milch Pulver,PIECE,0,1,2,-1
+18,Nutella,PIECE,0,1,1,-1
+19,Oatly,PIECE,2,6,8,-1
+20,Oatly Kakao,PIECE,2,6,5,-1
+21,OlivenÃ¶l,PIECE,0,1,0,0
+22,Pastagenuss,PIECE,1,1,3,-1
+23,Porridge,GRAMM,100,375,475,-1
+24,RapsÃ¶l,PIECE,0,1,1,-1
+25,Reibegenuss,PIECE,1,1,2,-1
+26,SonnenblumenÃ¶l,PIECE,0,1,2,-1
+27,Spaghetti,GRAMM,250,500,1000,-1
+28,Spezi,PIECE,3,20,16,-1
+29,Wasser,PIECE,2,6,-1,-1
+30,Wiener,PIECE,2,8,9,-1
+31,Zewa,PIECE,2,3,5,-1
+32,Zucker,GRAMM,1000,1000,1000,-1
+33,Zwieback,PIECE,0,1,1,-1
+34,Zwiebeln,PIECE,2,10,4,-1
