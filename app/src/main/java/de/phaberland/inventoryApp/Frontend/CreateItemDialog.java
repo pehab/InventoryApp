@@ -160,9 +160,10 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
             crit = Integer.parseInt(txt);
         }
         int m_existingItemId = ItemProvider.getInstance().findExistingItem(name, unit);
+        Item item;
         if(m_existingItemId == -1) {
             m_existingItemId = ItemProvider.getInstance().addItem(name, unit);
-            Item item = ItemProvider.getInstance().getItemById(m_existingItemId);
+            item = ItemProvider.getInstance().getItemById(m_existingItemId);
             if(def != -1) {
                 item.setM_defValue(def);
             }
@@ -170,7 +171,7 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
                 item.setM_critValue(crit);
             }
         } else {
-            Item item = ItemProvider.getInstance().getItemById(m_existingItemId);
+            item = ItemProvider.getInstance().getItemById(m_existingItemId);
 
             if((crit != -1 || def != -1) &&
                     (item.getM_critValue() != crit || item.getM_defValue() != def)) {
@@ -182,7 +183,7 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
             }
         }
         if(m_callback != null) {
-            m_callback.update(m_existingItemId);
+            m_callback.update(item.getM_id());
         }
     }
 

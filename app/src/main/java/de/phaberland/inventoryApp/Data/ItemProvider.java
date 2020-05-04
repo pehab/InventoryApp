@@ -96,8 +96,8 @@ public class ItemProvider{
 
         m_allItems.clear();
         for(HashMap.Entry<Integer, Item> entry : listOfEntries){
-            m_allItems.put(ItemProvider.getInstance().getNextId(), entry.getValue());
             entry.getValue().setM_id(ItemProvider.getInstance().getNextId());
+            m_allItems.put(ItemProvider.getInstance().getNextId(), entry.getValue());
         }
     }
 

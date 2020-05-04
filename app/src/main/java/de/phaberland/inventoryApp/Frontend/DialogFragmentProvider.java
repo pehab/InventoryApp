@@ -123,6 +123,7 @@ public class DialogFragmentProvider {
 
         // add filter
         EditText filter = new EditText(activity);
+        filter.setHint(R.string.label_filter);
         filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
