@@ -9,6 +9,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.R;
 
@@ -59,12 +60,12 @@ public class RemoveFromInventoryDialog extends DialogFragment {
 
     private void handlePositiveButton() {
         ItemList list = ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID);
-        if(!list.hasItem(m_itemId)) {
+        Item item = ItemProvider.getInstance().getItemById(m_itemId);
+        if(!list.hasItem(item)) {
             return;
         }
 
-        list.remove(ItemProvider.getInstance().getItemById(m_itemId),getAmount());
-
+        list.remove(item ,getAmount());
         m_callback.update();
     }
 

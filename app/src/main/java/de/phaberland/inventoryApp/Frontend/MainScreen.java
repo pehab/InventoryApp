@@ -1,6 +1,7 @@
 package de.phaberland.inventoryApp.Frontend;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -100,8 +101,9 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
                     case "1": unit = Item.UNIT.MILILITER; break;
                     default: unit = Item.UNIT.PIECE; break;
                 }
-                ItemProvider.getInstance().addItem(itemName, unit);
+                ItemProvider.getInstance().addItem(itemName, unit, false);
             }
+            ItemProvider.getInstance().sortItems();
         }
 
         // set up initial layout

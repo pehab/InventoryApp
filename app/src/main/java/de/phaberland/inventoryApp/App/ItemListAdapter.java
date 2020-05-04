@@ -29,7 +29,7 @@ public class ItemListAdapter extends ArrayAdapter<Integer> implements SectionInd
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        Item item = ItemProvider.getInstance().getItemById(position);
+        Item item = ItemProvider.getInstance().getItemById(m_ids.get(position));
         TextView text = new TextView(getContext());
         text.setText(item.getM_name());
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

@@ -62,7 +62,7 @@ public class ItemList implements Serializable {
     }
 
     public void remove(int itemId) {
-        m_content.remove(itemId);
+        m_content.remove(ItemProvider.getInstance().getItemById(itemId));
     }
 
     public void remove(Item item, int amount) {
@@ -81,22 +81,23 @@ public class ItemList implements Serializable {
     }
 
     private void checkAddToShopping(Item item, int newAmount) {
-        if(newAmount <= ItemProvider.getInstance().getItemById(item.getM_id()).getM_critValue() &&
+        if(newAmount <= item.getM_critValue() &&
                 id == INVENTORY_LIST_ID) {
-            if(ListProvider.getInstance().getListById(SHOPPING_LIST_ID).hasItem(item.getM_id())) {
+            if(ListProvider.getInstance().getListById(SHOPPING_LIST_ID).hasItem(item)) {
                 return;
             }
             ListProvider.getInstance().getListById(SHOPPING_LIST_ID).add(item,0);
         }
     }
 
-    public boolean hasItem(int id) {
-        return m_content.containsKey(id);
+    public boolean hasItem(Item item) {
+        return m_content.containsKey(item);
     }
 
     public int getAmountForId(int itemId) {
-        if(hasItem(itemId)) {
-            return m_content.get(itemId);
+        Item item = ItemProvider.getInstance().getItemById(itemId);
+        if(hasItem(item)) {
+            return m_content.get(item);
         } else {
             return -1;
         }

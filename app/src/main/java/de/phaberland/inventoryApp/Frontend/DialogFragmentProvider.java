@@ -27,6 +27,7 @@ import de.phaberland.inventoryApp.R;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.List;
 
 public class DialogFragmentProvider {
@@ -116,6 +117,31 @@ public class DialogFragmentProvider {
         controls.layout.setOrientation(LinearLayout.HORIZONTAL);
         controls.layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 
+        LinearLayout itemSelector = new LinearLayout(activity);
+        itemSelector.setOrientation(LinearLayout.VERTICAL);
+        itemSelector.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        // add filter
+        EditText filter = new EditText(activity);
+        filter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItemsFiltered(s.toString()).keySet());
+                if(controls.adapter != null) {
+                    controls.adapter = new ItemListAdapter(activity,
+                            android.R.layout.simple_list_item_1, android.R.id.text1, list);
+                    controls.listView.setAdapter(controls.adapter);
+                }
+            }
+        });
+        itemSelector.addView(filter);
+
         // item selector
         List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItems().keySet());
         controls.adapter = new ItemListAdapter(activity,
@@ -134,7 +160,9 @@ public class DialogFragmentProvider {
         }
         params.setMargins(16,16,16,16);
         controls.listView.setLayoutParams(params);
-        controls.layout.addView(controls.listView);
+
+        itemSelector.addView(controls.listView);
+        controls.layout.addView(itemSelector);
 
         // create new Item button
         Button newItemButton = new Button(activity);

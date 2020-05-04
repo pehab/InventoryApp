@@ -71,10 +71,10 @@ public class ItemProvider{
 
     public int addItem(String name, Item.UNIT unit, boolean sortList) {
         Item newItem = new Item(name, unit);
+        m_allItems.put(newItem.getM_id(), newItem);
         if(sortList) {
-            m_allItems.put(newItem.getM_id(), newItem);
+            sortItems();
         }
-        sortItems();
         return newItem.getM_id();
     }
 
@@ -95,6 +95,7 @@ public class ItemProvider{
         Collections.sort(listOfEntries, valueComparator);
 
         int idCount = 0;
+        m_allItems.clear();
         for(HashMap.Entry<Integer, Item> entry : listOfEntries){
             m_allItems.put(idCount, entry.getValue());
             entry.getValue().setM_id(idCount);
@@ -106,17 +107,17 @@ public class ItemProvider{
         return m_allItems;
     }
 
-    public List<Item> getAllItemsFiltered(String filter) {
+    public HashMap<Integer, Item> getAllItemsFiltered(String filter) {
         if(filter.isEmpty()){
-            getAllItems().values();
+            return getAllItems();
         }
-        List<Item> filteredList = new ArrayList<>();
+        HashMap<Integer,Item> filteredList = new HashMap<>();
         for (HashMap.Entry<Integer,Item> entry : m_allItems.entrySet()) {
             Item item = entry.getValue();
             if(item != null) {
                 String name =  item.getM_name().toLowerCase();
                 if(name.contains(filter.toLowerCase())) {
-                    filteredList.add(entry.getValue());
+                    filteredList.put(entry.getKey(), entry.getValue());
                 }
             }
         }

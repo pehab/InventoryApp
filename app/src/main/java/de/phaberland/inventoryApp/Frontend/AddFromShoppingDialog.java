@@ -61,7 +61,7 @@ public class AddFromShoppingDialog extends DialogFragment {
         list.add(ItemProvider.getInstance().getItemById(m_itemId),getAmount());
 
         list = ListProvider.getInstance().getListById(ItemList.SHOPPING_LIST_ID);
-        if(list.hasItem(m_itemId)) {
+        if(list.hasItem(ItemProvider.getInstance().getItemById(m_itemId))) {
             list.remove(m_itemId);
         }
 
