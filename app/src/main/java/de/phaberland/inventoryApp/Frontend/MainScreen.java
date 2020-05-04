@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 
@@ -112,7 +113,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         m_filter = "";
         // activate inventory button
         Button button = findViewById(R.id.inventoryButton);
-        button.setBackgroundColor(Color.CYAN);
+        button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         button.setActivated(false);
         // deactivate shopping button
         button = findViewById(R.id.shoppingButton);
@@ -157,7 +158,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         if(m_listId != 0) {
             // activate inventory button
             Button button = findViewById(R.id.inventoryButton);
-            button.setBackgroundColor(Color.CYAN);
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
             button.setActivated(false);
             // deactivate shopping button
             button = findViewById(R.id.shoppingButton);
@@ -175,7 +176,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         if(m_listId != 1) {
             // activate shopping button
             Button button = findViewById(R.id.shoppingButton);
-            button.setBackgroundColor(Color.CYAN);
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
             button.setActivated(false);
             // deactivate inventory button
             button = findViewById(R.id.inventoryButton);

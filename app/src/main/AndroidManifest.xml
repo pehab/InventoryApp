@@ -8,12 +8,16 @@
     <application
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/inv_launcher"
+        android:logo="@mipmap/inv_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/inv_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="de.phaberland.inventoryApp.Frontend.MainScreen">
+        <activity android:name="de.phaberland.inventoryApp.Frontend.MainScreen"
+            android:icon="@mipmap/inv_launcher"
+            android:logo="@mipmap/inv_launcher"
+            android:roundIcon="@mipmap/inv_launcher_round">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
