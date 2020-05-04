@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemList;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Data.ListProvider;
@@ -55,10 +56,10 @@ public class InventoryApp {
         }
     }
 
-    public void addToList(int listId, int itemId, int amount) {
+    public void addToList(int listId, Item item, int amount) {
         ItemList list = ListProvider.getInstance().getListById(listId);
         if(list != null) {
-            list.add(itemId, amount);
+            list.add(item, amount);
         }
     }
 }

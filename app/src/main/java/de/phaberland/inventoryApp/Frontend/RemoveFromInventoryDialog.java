@@ -9,6 +9,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.R;
 
 import de.phaberland.inventoryApp.Data.ItemList;
@@ -62,7 +63,7 @@ public class RemoveFromInventoryDialog extends DialogFragment {
             return;
         }
 
-        list.remove(m_itemId,getAmount());
+        list.remove(ItemProvider.getInstance().getItemById(m_itemId),getAmount());
 
         m_callback.update();
     }

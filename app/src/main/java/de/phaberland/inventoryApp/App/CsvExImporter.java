@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
-import java.util.List;
 
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemList;
@@ -81,20 +80,21 @@ class CsvExImporter {
                 } else if(values[2].equals(Item.UNIT.MILILITER.toString())) {
                     unit = Item.UNIT.MILILITER;
                 }
-                int itemId = ItemProvider.getInstance().addItem(values[1], unit);
+                int itemId = ItemProvider.getInstance().addItem(values[1], unit, false);
                 Item item = ItemProvider.getInstance().getItemById(itemId);
                 int crit = Integer.parseInt(values[3]);
                 item.setM_critValue(crit);
                 item.setM_defValue(Integer.parseInt(values[4]));
                 // inventory
                 if(!values[5].isEmpty() && !values[5].equals("-1")) {
-                    ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID).add(itemId, Integer.parseInt(values[5]));
+                    ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID).add(item, Integer.parseInt(values[5]));
                 }
                 // shopping
                 if(!values[6].isEmpty() && !values[6].equals("-1")) {
-                    ListProvider.getInstance().getListById(ItemList.SHOPPING_LIST_ID).add(itemId, Integer.parseInt(values[6]));
+                    ListProvider.getInstance().getListById(ItemList.SHOPPING_LIST_ID).add(item, Integer.parseInt(values[6]));
                 }
             }
+            ItemProvider.getInstance().sortItems();
 
             inputStream.close();
         }

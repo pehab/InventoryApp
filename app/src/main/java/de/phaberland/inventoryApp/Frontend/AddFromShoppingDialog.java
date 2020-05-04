@@ -58,7 +58,7 @@ public class AddFromShoppingDialog extends DialogFragment {
 
     private void handlePositiveButton() {
         ItemList list = ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID);
-        list.add(m_itemId,getAmount());
+        list.add(ItemProvider.getInstance().getItemById(m_itemId),getAmount());
 
         list = ListProvider.getInstance().getListById(ItemList.SHOPPING_LIST_ID);
         if(list.hasItem(m_itemId)) {

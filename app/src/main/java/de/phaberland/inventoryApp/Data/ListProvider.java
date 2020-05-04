@@ -64,10 +64,10 @@ public class ListProvider {
             return getListById(id);
         }
 
-        HashMap<Integer, Integer> list = getListById(id).getM_content();
+        HashMap<Item, Integer> list = getListById(id).getM_content();
         ItemList filteredList = new ItemList(true);
-        for (HashMap.Entry<Integer, Integer> entry : list.entrySet()) {
-            Item item = ItemProvider.getInstance().getItemById(entry.getKey());
+        for (HashMap.Entry<Item, Integer> entry : list.entrySet()) {
+            Item item = entry.getKey();
             if(item != null) {
                 String name =  item.getM_name().toLowerCase();
                 if(name.contains(filter.toLowerCase())) {

@@ -3,7 +3,12 @@ package de.phaberland.inventoryApp.Data;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import de.phaberland.inventoryApp.App.Serializer;
 
@@ -60,13 +65,61 @@ public class ItemProvider{
     }
 
     public int addItem(String name, Item.UNIT unit) {
+        return addItem(name, unit, true);
+    }
+
+    public int addItem(String name, Item.UNIT unit, boolean sortList) {
         Item newItem = new Item(name, unit);
-        m_allItems.put(newItem.getM_id(), newItem);
+        if(sortList) {
+            m_allItems.put(newItem.getM_id(), newItem);
+        }
+        sortItems();
         return newItem.getM_id();
+    }
+
+    public void sortItems() {
+        Comparator<HashMap.Entry<Integer, Item>> valueComparator = new Comparator<HashMap.Entry<Integer,Item>>() {
+
+            @Override
+            public int compare(HashMap.Entry<Integer, Item> e1, HashMap.Entry<Integer, Item> e2) {
+                String v1 = e1.getValue().getM_name();
+                String v2 = e2.getValue().getM_name();
+                return v1.compareTo(v2);
+            }
+        };
+        Set<HashMap.Entry<Integer, Item>> entries = m_allItems.entrySet();
+
+        List<HashMap.Entry<Integer, Item>> listOfEntries = new ArrayList<>(entries);
+
+        Collections.sort(listOfEntries, valueComparator);
+
+        int idCount = 0;
+        for(HashMap.Entry<Integer, Item> entry : listOfEntries){
+            m_allItems.put(idCount, entry.getValue());
+            entry.getValue().setM_id(idCount);
+            idCount++;
+        }
     }
 
     public HashMap<Integer,Item> getAllItems() {
         return m_allItems;
+    }
+
+    public List<Item> getAllItemsFiltered(String filter) {
+        if(filter.isEmpty()){
+            getAllItems().values();
+        }
+        List<Item> filteredList = new ArrayList<>();
+        for (HashMap.Entry<Integer,Item> entry : m_allItems.entrySet()) {
+            Item item = entry.getValue();
+            if(item != null) {
+                String name =  item.getM_name().toLowerCase();
+                if(name.contains(filter.toLowerCase())) {
+                    filteredList.add(entry.getValue());
+                }
+            }
+        }
+        return filteredList;
     }
 
     int getNextId() {

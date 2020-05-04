@@ -261,15 +261,15 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
         table.setStretchAllColumns(true);
 
-        for (HashMap.Entry<Integer, Integer> entry : listToDisplay.getM_content().entrySet()) {
+        for (HashMap.Entry<Item, Integer> entry : listToDisplay.getM_content().entrySet()) {
             TableRow tr = null;
 
             switch(m_listId) {
                 case 0:
-                    tr = createInventoryEntry( ItemProvider.getInstance().getItemById(entry.getKey()),entry.getValue());
+                    tr = createInventoryEntry( entry.getKey(),entry.getValue());
                     break;
                 case 1:
-                    tr = createShoppingEntry( ItemProvider.getInstance().getItemById(entry.getKey()));
+                    tr = createShoppingEntry( entry.getKey());
                     break;
                 default:
                     // TODO: log an error
@@ -347,14 +347,14 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
     @Override
     public void readAddToInvDlgAndUpdate() {
-        m_app.addToList(m_listId, m_addToInvDlg.getItemId(), m_addToInvDlg.getAmount());
+        m_app.addToList(m_listId, ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
         m_addToInvDlg.dismiss();
         updateList();
     }
 
     @Override
     public void readAddToShoppingDlgAndUpdate() {
-        m_app.addToList(m_listId, m_addToShopDlg.getItemId(), 0);
+        m_app.addToList(m_listId,  ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
         m_addToShopDlg.dismiss();
         updateList();
     }

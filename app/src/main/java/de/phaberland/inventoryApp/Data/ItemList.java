@@ -12,7 +12,7 @@ public class ItemList implements Serializable {
 
     private int id;
     //private String m_name;
-    private HashMap<Integer, Integer> m_content;
+    private HashMap<Item, Integer> m_content;
 
     ItemList(boolean bTemp) {
         if(bTemp) {
@@ -47,46 +47,46 @@ public class ItemList implements Serializable {
         this.m_name = m_name;
     }*/
 
-    public HashMap<Integer, Integer> getM_content() {
+    public HashMap<Item, Integer> getM_content() {
         return m_content;
     }
 
-    public void add(Integer itemId, int amount) {
-        if (m_content.containsKey(itemId)) {
-            int newAmount = amount + m_content.get(itemId);
-            m_content.put(itemId,newAmount);
+    public void add(Item item, int amount) {
+        if (m_content.containsKey(item)) {
+            int newAmount = amount + m_content.get(item);
+            m_content.put(item,newAmount);
         } else {
-            m_content.put(itemId, amount);
+            m_content.put(item, amount);
         }
-         checkAddToShopping(itemId, amount);
+        checkAddToShopping(item, amount);
     }
 
     public void remove(int itemId) {
         m_content.remove(itemId);
     }
 
-    public void remove(int itemId, int amount) {
-        if(m_content.containsKey(itemId)) {
-            int newAmount = m_content.get(itemId) - amount;
+    public void remove(Item item, int amount) {
+        if(m_content.containsKey(item)) {
+            int newAmount = m_content.get(item) - amount;
 
             if(newAmount <= 0) {
-                m_content.remove(itemId);
+                m_content.remove(item);
             } else {
-                m_content.put(itemId, newAmount);
+                m_content.put(item, newAmount);
             }
 
-            checkAddToShopping(itemId, newAmount);
+            checkAddToShopping(item, newAmount);
 
         }
     }
 
-    private void checkAddToShopping(int itemId, int newAmount) {
-        if(newAmount <= ItemProvider.getInstance().getItemById(itemId).getM_critValue() &&
+    private void checkAddToShopping(Item item, int newAmount) {
+        if(newAmount <= ItemProvider.getInstance().getItemById(item.getM_id()).getM_critValue() &&
                 id == INVENTORY_LIST_ID) {
-            if(ListProvider.getInstance().getListById(SHOPPING_LIST_ID).hasItem(itemId)) {
+            if(ListProvider.getInstance().getListById(SHOPPING_LIST_ID).hasItem(item.getM_id())) {
                 return;
             }
-            ListProvider.getInstance().getListById(SHOPPING_LIST_ID).add(itemId,0);
+            ListProvider.getInstance().getListById(SHOPPING_LIST_ID).add(item,0);
         }
     }
 
@@ -103,7 +103,7 @@ public class ItemList implements Serializable {
     }
 
     private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException {
-        m_content = (HashMap<Integer, Integer>)aInputStream.readObject();
+        m_content = (HashMap<Item, Integer>)aInputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream aOutputStream) throws IOException {
