@@ -94,12 +94,10 @@ public class ItemProvider{
 
         Collections.sort(listOfEntries, valueComparator);
 
-        int idCount = 0;
         m_allItems.clear();
         for(HashMap.Entry<Integer, Item> entry : listOfEntries){
-            m_allItems.put(idCount, entry.getValue());
-            entry.getValue().setM_id(idCount);
-            idCount++;
+            m_allItems.put(ItemProvider.getInstance().getNextId(), entry.getValue());
+            entry.getValue().setM_id(ItemProvider.getInstance().getNextId());
         }
     }
 
