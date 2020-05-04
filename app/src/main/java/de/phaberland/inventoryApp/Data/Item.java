@@ -33,6 +33,11 @@ public class Item implements Serializable {
         return m_id;
     }
 
+    // dangerous... should only be used by the itemprovider when sorting...
+    void setM_id(int id) {
+        m_id = id;
+    }
+
     public String getM_name() {
         return m_name;
     }

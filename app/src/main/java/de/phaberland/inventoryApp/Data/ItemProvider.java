@@ -34,6 +34,7 @@ public class ItemProvider{
 
         Serializer ser = new Serializer(instance.m_activity);
         instance.m_allItems = ser.readAllItems();
+        instance.sortItems();
     }
 
     public static void deinit() {
