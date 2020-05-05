@@ -126,7 +126,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         activeButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         activeButton.setActivated(true);
 
-        inactiveButton.setBackgroundColor(Color.WHITE);
+        inactiveButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorInactiv));
         inactiveButton.setActivated(false);
 
         // show initial list
@@ -171,7 +171,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
             button.setActivated(false);
             // deactivate shopping button
             button = findViewById(R.id.shoppingButton);
-            button.setBackgroundColor(Color.WHITE);
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorInactiv));
             button.setActivated(true);
             //change list mode and update the list
             m_app.setActiveList(ItemList.INVENTORY_LIST_ID);
@@ -189,7 +189,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
             button.setActivated(false);
             // deactivate inventory button
             button = findViewById(R.id.inventoryButton);
-            button.setBackgroundColor(Color.WHITE);
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorInactiv));
             button.setActivated(true);
             m_app.setActiveList(ItemList.SHOPPING_LIST_ID);
             updateList();
