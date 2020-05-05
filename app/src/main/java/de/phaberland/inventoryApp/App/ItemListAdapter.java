@@ -10,11 +10,13 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemProvider;
+import de.phaberland.inventoryApp.R;
 
 public class ItemListAdapter extends ArrayAdapter<Integer> implements SectionIndexer {
     private List<Integer> m_ids;
@@ -35,7 +37,7 @@ public class ItemListAdapter extends ArrayAdapter<Integer> implements SectionInd
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         text.setLayoutParams(params);
         if(position == m_selectedItem) {
-           text.setBackgroundColor(Color.LTGRAY);
+           text.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
            text.setTextSize(TypedValue.COMPLEX_UNIT_PX, text.getTextSize() + 5);
         }
         return text;
