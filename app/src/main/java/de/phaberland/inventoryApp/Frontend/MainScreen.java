@@ -33,7 +33,6 @@ import de.phaberland.inventoryApp.R;
 
 public class MainScreen extends AppCompatActivity implements EventCallback {
     private ScrollView m_list;
-    private int m_listId;
     private InventoryApp m_app;
     private String m_filter;
 
@@ -109,16 +108,26 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
         // set up initial layout
         m_list = findViewById(R.id.mainTable);
-        m_listId = 0;
         m_filter = "";
-        // activate inventory button
-        Button button = findViewById(R.id.inventoryButton);
-        button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-        button.setActivated(false);
-        // deactivate shopping button
-        button = findViewById(R.id.shoppingButton);
-        button.setBackgroundColor(Color.WHITE);
-        button.setActivated(true);
+
+        Button activeButton = null;
+        Button inactiveButton = null;
+        if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
+            // activate inventory button
+            activeButton = findViewById(R.id.inventoryButton);
+            // deactivate shopping button
+            inactiveButton = findViewById(R.id.shoppingButton);
+        } else {//if(m_app.getActiveList() == ItemList.SHOPPING_LIST_ID) {
+            // activate shopping button
+            activeButton = findViewById(R.id.shoppingButton);
+            // deactivate inventory button
+            inactiveButton = findViewById(R.id.inventoryButton);
+        }
+        activeButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        activeButton.setActivated(true);
+
+        inactiveButton.setBackgroundColor(Color.WHITE);
+        inactiveButton.setActivated(false);
 
         // show initial list
         updateList();
@@ -133,7 +142,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     ///////////////////////////
 
     public void addButtonPressed(View view) {
-        if(m_listId == ItemList.INVENTORY_LIST_ID) {
+        if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
             m_addToInvDlg = new AddToInventoryDialog(this);
             m_addToInvDlg.show(getSupportFragmentManager(), getString(R.string.tag_add_to_inv_dlg));
         } else {
@@ -155,7 +164,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     }
 
     public void inventoryButtonPressed(View view) {
-        if(m_listId != 0) {
+        if(m_app.getActiveList() != 0) {
             // activate inventory button
             Button button = findViewById(R.id.inventoryButton);
             button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -165,7 +174,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
             button.setBackgroundColor(Color.WHITE);
             button.setActivated(true);
             //change list mode and update the list
-            m_listId = ItemList.INVENTORY_LIST_ID;
+            m_app.setActiveList(ItemList.INVENTORY_LIST_ID);
             updateList();
 
             Toast.makeText(this.getApplicationContext(), (getString(R.string.toast_switch_inv)),Toast.LENGTH_SHORT).show();
@@ -173,7 +182,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     }
 
     public void shoppingButtonPressed(View view) {
-        if(m_listId != 1) {
+        if(m_app.getActiveList() != 1) {
             // activate shopping button
             Button button = findViewById(R.id.shoppingButton);
             button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -182,7 +191,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
             button = findViewById(R.id.inventoryButton);
             button.setBackgroundColor(Color.WHITE);
             button.setActivated(true);
-            m_listId = ItemList.SHOPPING_LIST_ID;
+            m_app.setActiveList(ItemList.SHOPPING_LIST_ID);
             updateList();
 
             Toast.makeText(this.getApplicationContext(), (getString(R.string.toast_switch_shop)),Toast.LENGTH_SHORT).show();
@@ -244,7 +253,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
      * depending on the mode we are in it will show the filtered lists
      */
     private void updateList() {
-        ItemList listToDisplay = ListProvider.getInstance().getFilteredList(m_listId, m_filter);
+        ItemList listToDisplay = ListProvider.getInstance().getFilteredList(m_app.getActiveList(), m_filter);
         m_list.removeAllViews();
 
         addSwipeListener(m_list);
@@ -267,7 +276,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         for (HashMap.Entry<Item, Integer> entry : listToDisplay.getM_content().entrySet()) {
             TableRow tr = null;
 
-            switch(m_listId) {
+            switch(m_app.getActiveList()) {
                 case 0:
                     tr = createInventoryEntry( entry.getKey(),entry.getValue());
                     break;
@@ -350,14 +359,14 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
     @Override
     public void readAddToInvDlgAndUpdate() {
-        m_app.addToList(m_listId, ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
+        m_app.addToList(m_app.getActiveList(), ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
         m_addToInvDlg.dismiss();
         updateList();
     }
 
     @Override
     public void readAddToShoppingDlgAndUpdate() {
-        m_app.addToList(m_listId,  ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
+        m_app.addToList(m_app.getActiveList(),  ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
         m_addToShopDlg.dismiss();
         updateList();
     }

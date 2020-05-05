@@ -14,6 +14,11 @@ import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Data.ListProvider;
 
 public class InventoryApp {
+    static class AppState {
+        // todo: add more stuff that we want to save, when exiting the app
+        int currentSelectedList;
+    }
+    AppState m_appState;
     private Activity m_activity;
 
     public InventoryApp(Activity activity) {
@@ -32,11 +37,22 @@ public class InventoryApp {
         return true;
     }
 
+    public void setActiveList(int listId) {
+        m_appState.currentSelectedList = listId;
+    }
+
+    public int getActiveList() {
+        return m_appState.currentSelectedList;
+    }
+
     /* init will initialize the list Provider,
      */
     public void init() {
         ListProvider.init(m_activity);
         ItemProvider.init(m_activity);
+
+        Serializer ser = new Serializer(m_activity);
+        m_appState = ser.readAppState();
 
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -45,6 +61,9 @@ public class InventoryApp {
     public void deinit() {
         ListProvider.deinit();
         ItemProvider.deinit();
+        Serializer ser = new Serializer(m_activity);
+        ser.writeAppState(m_appState);
+
         if(checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             CsvExImporter.exportCsvToDownloads();
         }

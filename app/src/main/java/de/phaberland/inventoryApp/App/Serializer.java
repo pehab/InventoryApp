@@ -2,23 +2,31 @@ package de.phaberland.inventoryApp.App;
 
 import android.content.Context;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StreamCorruptedException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemList;
+import de.phaberland.inventoryApp.Data.ItemProvider;
+import de.phaberland.inventoryApp.Data.ListProvider;
 
 public class Serializer {
     private static final String SUBFOLDER = "/inventoryData";
     private static final String LISTFILE = "allLists.ser";
     private static final String ITEMFILE = "allItems.ser";
+    private static final String APPSTATEFILE = "appState.ser";
 
     private Context m_appContext;
 
@@ -65,7 +73,6 @@ public class Serializer {
             }
         }
     }
-
 
     public HashMap<Integer,ItemList> readLists() {
         File cacheDir = m_appContext.getFilesDir();
@@ -190,6 +197,76 @@ public class Serializer {
             } catch (Exception ignored) {
 
             }
+        }
+    }
+
+    InventoryApp.AppState readAppState() {
+        InventoryApp.AppState state = new InventoryApp.AppState();
+        // if we do not find something just init with 0;
+        state.currentSelectedList = 0;
+        File cacheDir = m_appContext.getFilesDir();
+        String BaseFolder = cacheDir.getAbsolutePath();
+        File appDirectory = new File(BaseFolder + SUBFOLDER);
+
+        if (!appDirectory.exists()) {
+            appDirectory.mkdirs();
+        }
+        File fileName = new File(appDirectory, APPSTATEFILE);
+
+        try {
+            FileInputStream inputStream = new FileInputStream(fileName);
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String receiveString;
+
+            if ( (receiveString = bufferedReader.readLine()) != null ) {
+                state.currentSelectedList = Integer.parseInt(receiveString);
+            }
+
+            bufferedReader.close();
+            inputStreamReader.close();
+            inputStream.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        return state;
+    }
+
+    void writeAppState(InventoryApp.AppState state) {
+        File cacheDir = m_appContext.getFilesDir();
+        String BaseFolder = cacheDir.getAbsolutePath();
+        File appDirectory = new File(BaseFolder + SUBFOLDER);
+
+        if (!appDirectory.exists()) {
+            appDirectory.mkdirs();
+        }
+        File fileName = new File(appDirectory, APPSTATEFILE);
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(fileName);
+
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+            bufferedWriter.write(Integer.toString(state.currentSelectedList));
+
+            outputStream.flush();
+            outputStreamWriter.flush();
+            bufferedWriter.flush();
+
+            outputStream.close();
+            outputStreamWriter.close();
+            bufferedWriter.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }  catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
