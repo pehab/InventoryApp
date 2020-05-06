@@ -17,10 +17,11 @@ import de.phaberland.inventoryApp.Data.ItemList;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Data.ListProvider;
 
+//TODO: refactor and document. Make this inherit from Serializer to share common functionality, like file access.
 class CsvExImporter {
     static private final String FILENAME = "export.csv";
 
-    static void exportCsvToDownloads() {
+    static boolean exportCsvToDownloads() {
         File downloadDir = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
 
@@ -50,12 +51,15 @@ class CsvExImporter {
             fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
-    static void importCsvFromDownloads() {
+    static boolean importCsvFromDownloads() {
         File downloadDir = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         try {
@@ -100,8 +104,11 @@ class CsvExImporter {
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 }

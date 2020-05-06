@@ -19,10 +19,10 @@ import java.util.HashMap;
 
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemList;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Data.ListProvider;
 
-public class Serializer {
+//TODO: refactor and document
+
+class Serializer {
     private static final String SUBFOLDER = "/inventoryData";
     private static final String LISTFILE = "allLists.ser";
     private static final String ITEMFILE = "allItems.ser";
@@ -30,11 +30,11 @@ public class Serializer {
 
     private Context m_appContext;
 
-    public Serializer(Context context) {
+    Serializer(Context context) {
         m_appContext = context;
     }
 
-    public void writeLists(HashMap<Integer, ItemList> lists) {
+    void writeLists(HashMap<Integer, ItemList> lists) {
         File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
@@ -74,7 +74,7 @@ public class Serializer {
         }
     }
 
-    public HashMap<Integer,ItemList> readLists() {
+    HashMap<Integer,ItemList> readLists() {
         File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
@@ -117,7 +117,7 @@ public class Serializer {
         return myHashMap;
     }
 
-    public HashMap<Integer, Item> readAllItems() {
+    HashMap<Integer, Item> readAllItems() {
         File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);
@@ -160,7 +160,7 @@ public class Serializer {
         return myHashMap;
     }
 
-    public void writeAllItems(HashMap<Integer, Item> m_allItems) {
+    void writeAllItems(HashMap<Integer, Item> m_allItems) {
         File cacheDir = m_appContext.getFilesDir();
         String BaseFolder = cacheDir.getAbsolutePath();
         File appDirectory = new File(BaseFolder + SUBFOLDER);

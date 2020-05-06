@@ -1,7 +1,6 @@
 package de.phaberland.inventoryApp.Frontend;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -239,9 +238,8 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         button.setPadding(3, 3, 3, 3);
         EventHandler.EventHandlerParams params = new EventHandler.EventHandlerParams();
         params.m_mode = mode;
-        params.m_callback = this;
+        params.m_mainScreen = this;
         params.m_itemId = itemId;
-        params.m_activity = this;
 
         button.setOnClickListener(new EventHandler(params));
         addSwipeListener(button);
@@ -340,7 +338,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         tr.addView(addTextField(item.getM_name()));
 
         // add remove button
-        tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICKED, item.getM_id(), getString(R.string.button_remove)));
+        tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICK, item.getM_id(), getString(R.string.button_remove)));
 
         // add add button
         tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK, item.getM_id(), getString(R.string.button_add)));
@@ -359,14 +357,16 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
 
     @Override
     public void readAddToInvDlgAndUpdate() {
-        m_app.addToList(m_app.getActiveList(), ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
+        ListProvider.getInstance().getListById(m_app.getActiveList())
+                .add(ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
         m_addToInvDlg.dismiss();
         updateList();
     }
 
     @Override
     public void readAddToShoppingDlgAndUpdate() {
-        m_app.addToList(m_app.getActiveList(),  ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
+        ListProvider.getInstance().getListById(m_app.getActiveList())
+                .add(ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
         m_addToShopDlg.dismiss();
         updateList();
     }

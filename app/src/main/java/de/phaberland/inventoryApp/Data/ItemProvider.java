@@ -1,7 +1,6 @@
 package de.phaberland.inventoryApp.Data;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import de.phaberland.inventoryApp.App.Serializer;
-
 public class ItemProvider{
     @SuppressLint("StaticFieldLeak")
     private static ItemProvider instance = null;
-    private Activity m_activity;
     private HashMap<Integer,Item> m_allItems;
 
     public static ItemProvider getInstance() {
@@ -25,21 +21,9 @@ public class ItemProvider{
         return instance;
     }
 
-    public static void init(Activity activity) {
-        if(instance == null) {
-            instance = new ItemProvider();
-        }
-
-        instance.m_activity = activity;
-
-        Serializer ser = new Serializer(instance.m_activity);
-        instance.m_allItems = ser.readAllItems();
-        instance.sortItems();
-    }
-
-    public static void deinit() {
-        Serializer ser = new Serializer(instance.m_activity);
-        ser.writeAllItems(instance.m_allItems);
+    public void init(HashMap<Integer,Item> allItems) {
+        m_allItems = allItems;
+        sortItems();
     }
 
     public void clear() {
