@@ -20,16 +20,16 @@ public class ListProvider {
         m_allLists = allLists;
 
         if(m_allLists.isEmpty()) {
-            addList(new ItemList()); // id = 0, we need to initialize a inventory list
-            addList(new ItemList()); // id = 1, we need to initialize a shopping list
+            addList(); // id = 0, we need to initialize a inventory list
+            addList(); // id = 1, we need to initialize a shopping list
         }
     }
 
     public void clear() {
         m_allLists.clear();
         // we always want to have inventory and shopping list.
-        addList(new ItemList());
-        addList(new ItemList());
+        addList();
+        addList();
     }
 
     public ItemList getListById(int id) {
@@ -60,7 +60,8 @@ public class ListProvider {
         return filteredList;
     }
 
-    private void addList(ItemList list) {
+    private void addList() {
+        ItemList list = new ItemList();
         m_allLists.put(list.getId(), list);
     }
 
