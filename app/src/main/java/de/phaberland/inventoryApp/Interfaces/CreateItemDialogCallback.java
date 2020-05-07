@@ -5,6 +5,8 @@
  */
 package de.phaberland.inventoryApp.Interfaces;
 
+import android.app.Activity;
+
 /**
  * CreateItemDialogCallback interface must implement the update method
  * Classes that want to be able to handle the DialogCallbacks.
@@ -20,5 +22,12 @@ public interface CreateItemDialogCallback {
      * providing the id of the newly created item.
      * @param newItemId id of the new item
      */
-    public void update(int newItemId);
+    void update(int newItemId);
+
+    /**
+     * Needs to return the activity associated with
+     * the Dialog calling.
+     * @return the activity
+     */
+    Activity getHostingActivity();
 }

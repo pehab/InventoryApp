@@ -1,5 +1,6 @@
 package de.phaberland.inventoryApp.Frontend;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,20 +15,19 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.phaberland.inventoryApp.App.ItemListAdapter;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Interfaces.CreateItemDialogCallback;
-import de.phaberland.inventoryApp.Interfaces.EventCallback;
 import de.phaberland.inventoryApp.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class AddToInventoryDialog extends DialogFragment implements CreateItemDialogCallback {
     private int m_itemId = 0;
     private int m_amount;
-    private EventCallback m_callback;
+    private MainScreen m_callback;
 
     private LinearLayout m_mainLayout;
 
@@ -38,7 +38,7 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
     private ListView m_itemList;
     private CreateItemDialog m_createItemDlg;
 
-    AddToInventoryDialog(EventCallback callback) {
+    AddToInventoryDialog(MainScreen callback) {
         m_callback = callback;
     }
 
@@ -55,8 +55,7 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
         m_mainLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // initialize itemcreation
-        m_createItemDlg = new CreateItemDialog();
-        m_createItemDlg.setCallback(this);
+        m_createItemDlg = new CreateItemDialog(this);
 
         // create item selection
         createItemSelection();
@@ -138,7 +137,7 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
     @Override
     public void update(int newItemId) {
         List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItems().keySet());
-        ItemListAdapter adapter = new ItemListAdapter(getActivity(),
+        ItemListAdapter adapter = new ItemListAdapter(m_callback,
                 android.R.layout.simple_list_item_1, android.R.id.text1, list);
         adapter.setSelectedItem(newItemId);
         m_itemList.setAdapter(adapter);
@@ -147,5 +146,10 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
         m_mainLayout.removeView(m_AmountLayout);
         createAmountChoosing();
         m_mainLayout.addView(m_AmountLayout);
+    }
+
+    @Override
+    public Activity getHostingActivity() {
+        return m_callback;
     }
 }

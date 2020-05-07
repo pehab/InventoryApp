@@ -115,8 +115,8 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         m_list = findViewById(R.id.mainTable);
         m_filter = "";
 
-        Button activeButton = null;
-        Button inactiveButton = null;
+        Button activeButton;
+        Button inactiveButton;
         if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
             // activate inventory button
             activeButton = findViewById(R.id.inventoryButton);

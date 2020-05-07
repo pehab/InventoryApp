@@ -1,5 +1,6 @@
 package de.phaberland.inventoryApp.Frontend;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,17 +19,14 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.phaberland.inventoryApp.App.ItemListAdapter;
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemProvider;
-
 import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
-
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.List;
 
 public class DialogFragmentProvider {
     static class AmountControls {
@@ -42,6 +40,7 @@ public class DialogFragmentProvider {
         ItemListAdapter adapter;
     }
 
+    @SuppressLint("SetTextI18n")
     static AmountControls createAmountChoosing(FragmentActivity activity, int itemId, int maxAmount) {
         final AmountControls controls = new AmountControls();
 

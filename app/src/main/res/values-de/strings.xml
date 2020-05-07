@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Inventar Verwaltung</string>
+    <string name="app_name">Inventar Verwaltung von phaberland</string>
 
     <string name="button_inv">Inventar</string>
     <string name="button_shop">Einkaufsliste</string>

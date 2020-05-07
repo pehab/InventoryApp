@@ -38,6 +38,10 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
     private EditText m_Default;
     private EditText m_Crit;
 
+    CreateItemDialog(CreateItemDialogCallback callback) {
+        m_callback = callback;
+    }
+
     /////////////////////
     // dialog creation //
     /////////////////////
@@ -130,7 +134,7 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
             }
             case UNIT: {
                 m_Unit = new Spinner(getContext());
-                ArrayAdapter<Item.UNIT> adapter = new ArrayAdapter<>(getContext(),
+                ArrayAdapter<Item.UNIT> adapter = new ArrayAdapter<>(m_callback.getHostingActivity(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, Item.UNIT.values());
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 m_Unit.setAdapter(adapter);
@@ -209,13 +213,5 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
         if(def != -1) {
             item.setM_defValue(def);
         }
-    }
-
-    ///////////////////
-    // setter/getter //
-    ///////////////////
-
-    void setCallback(CreateItemDialogCallback callback) {
-        m_callback = callback;
     }
 }

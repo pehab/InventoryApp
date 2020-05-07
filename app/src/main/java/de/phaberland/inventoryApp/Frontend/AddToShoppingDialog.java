@@ -1,5 +1,6 @@
 package de.phaberland.inventoryApp.Frontend;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,25 +13,24 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.phaberland.inventoryApp.App.ItemListAdapter;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Interfaces.CreateItemDialogCallback;
-import de.phaberland.inventoryApp.Interfaces.EventCallback;
 import de.phaberland.inventoryApp.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class AddToShoppingDialog extends DialogFragment implements CreateItemDialogCallback {
     private int m_itemId = 0;
-    private EventCallback m_callback;
+    private MainScreen m_callback;
 
     private LinearLayout m_ItemLayout;
     private ListView m_itemList;
     private CreateItemDialog m_createItemDlg;
 
-    AddToShoppingDialog(EventCallback callback) {
+    AddToShoppingDialog(MainScreen callback) {
         m_callback = callback;
     }
 
@@ -42,8 +42,7 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
         builder.setTitle(R.string.title_add_to_shopping);
 
         // initialize itemcreation
-        m_createItemDlg = new CreateItemDialog();
-        m_createItemDlg.setCallback(this);
+        m_createItemDlg = new CreateItemDialog(this);
 
         // create item selection
         createItemSelection();
@@ -101,11 +100,16 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
     @Override
     public void update(int newItemId) {
         List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItems().keySet());
-        ItemListAdapter adapter = new ItemListAdapter(getActivity(),
+        ItemListAdapter adapter = new ItemListAdapter(m_callback,
                 android.R.layout.simple_list_item_1, android.R.id.text1, list);
         adapter.setSelectedItem(newItemId);
         m_itemList.setAdapter(adapter);
         m_itemId = newItemId;
         m_itemList.setSelection(newItemId);
+    }
+
+    @Override
+    public Activity getHostingActivity() {
+        return m_callback;
     }
 }
