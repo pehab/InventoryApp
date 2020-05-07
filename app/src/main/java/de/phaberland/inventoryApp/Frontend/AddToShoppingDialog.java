@@ -14,16 +14,15 @@ import androidx.fragment.app.DialogFragment;
 
 import de.phaberland.inventoryApp.App.ItemListAdapter;
 import de.phaberland.inventoryApp.Data.ItemProvider;
+import de.phaberland.inventoryApp.Interfaces.CreateItemDialogCallback;
 import de.phaberland.inventoryApp.Interfaces.EventCallback;
 import de.phaberland.inventoryApp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.phaberland.inventoryApp.Interfaces.DialogCallback;
 
-
-public class AddToShoppingDialog extends DialogFragment implements DialogCallback {
+public class AddToShoppingDialog extends DialogFragment implements CreateItemDialogCallback {
     private int m_itemId = 0;
     private EventCallback m_callback;
 

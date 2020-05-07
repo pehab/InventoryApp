@@ -19,7 +19,7 @@ import androidx.fragment.app.DialogFragment;
 
 import de.phaberland.inventoryApp.Data.Item;
 import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Interfaces.DialogCallback;
+import de.phaberland.inventoryApp.Interfaces.CreateItemDialogCallback;
 
 import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
@@ -32,7 +32,7 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
         CRIT
     }
 
-    private DialogCallback m_callback;
+    private CreateItemDialogCallback m_callback;
     private EditText m_Name;
     private Spinner m_Unit;
     private EditText m_Default;
@@ -215,7 +215,7 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
     // setter/getter //
     ///////////////////
 
-    void setCallback(DialogCallback callback) {
+    void setCallback(CreateItemDialogCallback callback) {
         m_callback = callback;
     }
 }

@@ -6,11 +6,6 @@
 
 package de.phaberland.inventoryApp.Data;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
 /**
  * Item class is the base Item within the lists.
  * Item has:
@@ -23,7 +18,7 @@ import java.io.Serializable;
  * @author      Peter Haberland
  * @version     %I%, %G%
  */
-public class Item implements Serializable {
+public class Item {
     /**
      * specifies the measuring unit of an item.
      * Gramm, Mililiter or piece.
