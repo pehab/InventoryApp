@@ -36,20 +36,13 @@ public class ListProvider {
     /**
      * Initializes the internal list of lists.
      * Should always be called before using ListProvider.
-     * m_allItems will be set to the input parameter,
-     * if it is not null. An empty HashMap will be created
-     * otherwise.
-     * If no lists are given the function will also add the
-     * two initial Lists, that always need to be available,
+     * m_allItems will be set to an empty HashMap.
+     * The function will also add the two initial Lists,
+     * that always need to be available,
      * which is Inventory list (id=0) and Shopping list (id=1)
-     * @param allLists map of lists to initialize with
      */
-    public void init(HashMap<Integer,ItemList> allLists) {
-        if(allLists != null) {
-            m_allLists = allLists;
-        } else {
-            m_allLists = new HashMap<>();
-        }
+    public void init() {
+        m_allLists = new HashMap<>();
 
         if(m_allLists.isEmpty()) {
             addList(); // id = 0, we need to initialize a inventory list

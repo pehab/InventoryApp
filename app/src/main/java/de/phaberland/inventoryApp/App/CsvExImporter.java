@@ -119,10 +119,10 @@ class CsvExImporter {
      * folder. The data stored here, will be removed, when
      * the app is uninstalled.
      */
-    static void importAppState(Context context) {
+    static boolean importAppState(Context context) {
         File cacheDir = context.getFilesDir();
         File file = new File(cacheDir, APPSTATEFILE);
-        importe(file, STATE);
+        return importe(file, STATE);
     }
 
     ////////////////////////
@@ -237,7 +237,8 @@ class CsvExImporter {
      */
     private static void writeState(OutputStreamWriter streamWriter) throws IOException {
         InventoryApp.AppState state = InventoryApp.getAppState();
-        streamWriter.write(state.currentSelectedList);
+        String stringState = Integer.toString(state.currentSelectedList);
+        streamWriter.write(stringState.trim());
     }
 
     /**
@@ -293,7 +294,12 @@ class CsvExImporter {
         InventoryApp.AppState state = new InventoryApp.AppState();
         String receiveString;
         if ( (receiveString = bufferedReader.readLine()) != null ) {
-            state.currentSelectedList = Integer.parseInt(receiveString);
+            receiveString = receiveString.trim();
+            if(!receiveString.isEmpty()) {
+                state.currentSelectedList = Integer.parseInt(receiveString);
+            } else {
+                state.currentSelectedList = ItemList.INVENTORY_LIST_ID;
+            }
         }
         InventoryApp.setAppState(state);
     }

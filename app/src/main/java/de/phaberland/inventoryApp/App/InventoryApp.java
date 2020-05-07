@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import de.phaberland.inventoryApp.BuildConfig;
+import de.phaberland.inventoryApp.Data.ItemList;
 import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.Data.ListProvider;
 
@@ -54,17 +55,26 @@ public class InventoryApp {
     /////////////////
 
     /**
-     * Initializes the application data.
-     * It reads the application state information from the serializer,
-     * sets up the ItemProvider with all the items read from the serializer
-     * and sets up the ListProvider with the lists read from the serializer.
+     * Initializes the Providers and triggers the import
+     * of application state and items/lists from the
+     * application directory.
      * @see ListProvider
      * @see ItemProvider
      */
     public void init() {
-        CsvExImporter.importAppState(m_activity);
+        // init providers
+        ItemProvider.getInstance().init();
+        ListProvider.getInstance().init();
+
+        // read from app directory
+        if(!CsvExImporter.importAppState(m_activity)) {
+            m_appState = new AppState();
+            m_appState.currentSelectedList = ItemList.INVENTORY_LIST_ID;
+        }
+
         CsvExImporter.importCsvFromCache(m_activity);
 
+        // Todo: move that to when we actually want to ex-/import
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
     }

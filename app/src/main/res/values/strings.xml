@@ -33,6 +33,7 @@
     <string name="tag_add_item_dlg">RemoveAmountDlg</string>
 
     <string name="title_add_to_inventory">Add item to inventory</string>
+    <string name="title_add_to_shopping">Add item to shopping</string>
     <string name="title_new_item">Create new Item</string>
     <string name="title_remove_amount">Remove items from inventory</string>
     <string name="title_add_amount">Add Amount</string>

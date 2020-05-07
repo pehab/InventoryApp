@@ -46,23 +46,10 @@ public class ItemProvider{
      * init should be called before using the ItemProvider
      * to initialize the available items within the application.
      *
-     * If not initialized with map of items ItemProvider will
-     * not have any Items available and they need to be added.
-     *
-     * The function sets m_allItems map to the parameter and sorts
-     * the list, if it is filled.
-     *
-     * @param allItems map of all items available in the application
+     * The function initializes m_allItems with an empty HashMap
      */
-    public void init(HashMap<Integer,Item> allItems) {
-        if(allItems != null) {
-            m_allItems = allItems;
-        } else {
-            m_allItems = new HashMap<>();
-        }
-        if(m_allItems.size() > 1) {
-            sortItems();
-        }
+    public void init() {
+        m_allItems = new HashMap<>();
     }
 
     public void clear() {

@@ -34,6 +34,7 @@
     <string name="tag_add_item_dlg">RemoveAmountDlg</string>
 
     <string name="title_add_to_inventory">Füge Gegenstand zum Inventar hinzu</string>
+    <string name="title_add_to_shopping">Füge Gegenstand zur Einkaufliste hinzu</string>
     <string name="title_new_item">Erzeuge neuen Gegenstand</string>
     <string name="title_remove_amount">Entnehme Gegenstände aus dem Inventar</string>
     <string name="title_add_amount">Füge Menge zum Inventar hinzu</string>

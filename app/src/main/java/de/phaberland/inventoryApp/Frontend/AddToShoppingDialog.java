@@ -39,7 +39,7 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.title_add_to_inventory);
+        builder.setTitle(R.string.title_add_to_shopping);
 
         // initialize itemcreation
         m_createItemDlg = new CreateItemDialog();
