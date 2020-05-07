@@ -1,3 +1,9 @@
+/*
+ * Copyright 2020 Peter Haberland
+ *
+ * No licensing, you may use/alter that code as you wish.
+ */
+
 package de.phaberland.inventoryApp.Frontend;
 
 import android.annotation.SuppressLint;
