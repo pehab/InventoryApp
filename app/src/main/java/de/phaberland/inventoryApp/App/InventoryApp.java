@@ -31,10 +31,10 @@ public class InventoryApp {
     public static final int VERSION_CODE = BuildConfig.VERSION_CODE;
 
     static class AppState {
-        // todo: add more stuff that we want to save, when exiting the app
+        // todo: add more stuff that we want to save, when exiting the app like settings, user data etc...
         int currentSelectedList;
     }
-    private AppState m_appState;
+    private static AppState m_appState;
     private Activity m_activity;
 
     /**
@@ -58,16 +58,12 @@ public class InventoryApp {
      * It reads the application state information from the serializer,
      * sets up the ItemProvider with all the items read from the serializer
      * and sets up the ListProvider with the lists read from the serializer.
-     * @see Serializer
      * @see ListProvider
      * @see ItemProvider
      */
     public void init() {
-        Serializer ser = new Serializer(m_activity);
-        m_appState = ser.readAppState();
-
-        ItemProvider.getInstance().init(ser.readAllItems());
-        ListProvider.getInstance().init(ser.readLists());
+        CsvExImporter.importAppState(m_activity);
+        CsvExImporter.importCsvFromCache(m_activity);
 
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -78,15 +74,12 @@ public class InventoryApp {
      * Using the serializer the application state information will be written to the file system.
      * Also the contents of ItemProvider and ListProvider will be written to the file system,
      * for later retrieval
-     * @see Serializer
      * @see ListProvider
      * @see ItemProvider
      */
     public void deinit() {
-        Serializer ser = new Serializer(m_activity);
-        ser.writeAppState(m_appState);
-        ser.writeLists(ListProvider.getInstance().getAllLists());
-        ser.writeAllItems(ItemProvider.getInstance().getAllItems());
+        CsvExImporter.exportAppState(m_activity);
+        CsvExImporter.exportCsvToCache(m_activity);
 
         // Todo: once we have the export in settings, remove this
         exportCsv();
@@ -160,6 +153,14 @@ public class InventoryApp {
     ///////////////////
     // SETTER/GETTER //
     ///////////////////
+
+    static AppState getAppState() {
+        return m_appState;
+    }
+
+    static void setAppState(AppState state) {
+        m_appState = state;
+    }
 
     public void setActiveList(int listId) {
         m_appState.currentSelectedList = listId;

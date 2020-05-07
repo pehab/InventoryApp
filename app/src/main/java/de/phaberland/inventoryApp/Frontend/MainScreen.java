@@ -282,7 +282,6 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
                     tr = createShoppingEntry( entry.getKey());
                     break;
                 default:
-                    // TODO: log an error
                     break;
             }
             table.addView(tr);
