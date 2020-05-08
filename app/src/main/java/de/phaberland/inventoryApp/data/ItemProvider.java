@@ -6,8 +6,6 @@
 
 package de.phaberland.inventoryApp.data;
 
-import android.annotation.SuppressLint;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,7 +25,7 @@ import java.util.Set;
  * @version     %I%, %G%
  */
 public class ItemProvider{
-    @SuppressLint("StaticFieldLeak")
+
     private static ItemProvider instance = null;
     private HashMap<Integer,Item> m_allItems;
 

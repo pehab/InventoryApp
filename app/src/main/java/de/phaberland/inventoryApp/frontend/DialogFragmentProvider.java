@@ -1,6 +1,5 @@
 package de.phaberland.inventoryApp.frontend;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,12 +20,13 @@ import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import de.phaberland.inventoryApp.R;
 import de.phaberland.inventoryApp.app.ItemListAdapter;
 import de.phaberland.inventoryApp.data.Item;
 import de.phaberland.inventoryApp.data.ItemProvider;
 import de.phaberland.inventoryApp.interfaces.YesNoCallback;
-import de.phaberland.inventoryApp.R;
 
 public class DialogFragmentProvider {
     static class AmountControls {
@@ -40,7 +40,6 @@ public class DialogFragmentProvider {
         ItemListAdapter adapter;
     }
 
-    @SuppressLint("SetTextI18n")
     static AmountControls createAmountChoosing(FragmentActivity activity, int itemId, int maxAmount) {
         final AmountControls controls = new AmountControls();
 
@@ -66,7 +65,7 @@ public class DialogFragmentProvider {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                controls.editText.setText(Integer.toString(seekBar.getProgress()));
+                controls.editText.setText(String.format(Locale.getDefault(),"%d",seekBar.getProgress()));
             }
 
             @Override
@@ -82,7 +81,7 @@ public class DialogFragmentProvider {
         textArea.setGravity(Gravity.CENTER);
         controls.editText = new EditText(activity);
         controls.editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        controls.editText.setText(Integer.toString(seekBar.getProgress()));
+        controls.editText.setText(String.format(Locale.getDefault(),"%d",seekBar.getProgress()));
         controls.editText.setGravity(Gravity.CENTER);
         controls.editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,7 +102,7 @@ public class DialogFragmentProvider {
         textArea.addView(controls.editText);
         TextView text = new TextView(activity);
         text.setGravity(Gravity.CENTER);
-        text.setText("/" + seekBar.getMax());
+        text.setText(String.format(Locale.getDefault(),"/%d",seekBar.getMax()));
         textArea.addView(text);
         controls.layout.addView(textArea);
 

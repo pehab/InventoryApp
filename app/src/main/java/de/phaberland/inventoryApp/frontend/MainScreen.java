@@ -6,7 +6,6 @@
 
 package de.phaberland.inventoryApp.frontend;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -214,7 +213,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     ////////////////
     // List draws //
     ////////////////
-    @SuppressLint("ClickableViewAccessibility")
+
     private void addSwipeListener(final View view) {
         if(view != null) {
             view.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {

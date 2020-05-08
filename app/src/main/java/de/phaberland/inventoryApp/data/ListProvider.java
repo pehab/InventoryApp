@@ -6,8 +6,6 @@
 
 package de.phaberland.inventoryApp.data;
 
-import android.annotation.SuppressLint;
-
 import java.util.HashMap;
 
 /**
@@ -18,7 +16,6 @@ import java.util.HashMap;
  * @version     %I%, %G%
  */
 public class ListProvider {
-    @SuppressLint("StaticFieldLeak")
     private static ListProvider instance = null;
     private HashMap<Integer,ItemList> m_allLists;
 
