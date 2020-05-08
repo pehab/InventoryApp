@@ -1,3 +1,9 @@
+/*
+ * Copyright 2020 Peter Haberland
+ *
+ * No licensing, you may use/alter that code as you wish.
+ */
+
 package de.phaberland.inventoryApp.frontend;
 
 import android.app.AlertDialog;
@@ -16,6 +22,15 @@ import de.phaberland.inventoryApp.R;
 import de.phaberland.inventoryApp.data.ItemList;
 import de.phaberland.inventoryApp.data.ListProvider;
 
+/**
+ * RemoveFromInventoryDialog is a dialog which is
+ * spawned when the remove button in the inventory table.
+ * It is used to choose an amount that will be removed
+ * from inventory.
+ *
+ * @author      Peter Haberland
+ * @version     %I%, %G%
+ */
 public class RemoveFromInventoryDialog extends DialogFragment {
     private final int m_itemId;
     private EditText m_text;
@@ -25,11 +40,25 @@ public class RemoveFromInventoryDialog extends DialogFragment {
     // dialog creation //
     /////////////////////
 
+    /**
+     * Constructs an instance of the dialog,
+     * setting the item id, that is is called for
+     * and the callback.
+     * @param callback a MainScreen instance used as callback
+     * @param id id of the item selected.
+     */
     public RemoveFromInventoryDialog(MainScreen callback, int id) {
         m_itemId = id;
         m_callback = callback;
     }
 
+    /**
+     * creates the Dialog and sets up everything.
+     * The dialog will contain an amount choosing component,
+     * and a positive button.
+     * @param savedInstanceState Bundle not used in override
+     * @return the set up Dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -57,6 +86,11 @@ public class RemoveFromInventoryDialog extends DialogFragment {
     // eventhandling //
     ///////////////////
 
+    /**
+     * the positive button was pressed.
+     * the amount for the item in the inventory list is reduced
+     * by the chosen amount.
+     */
     private void handlePositiveButton() {
         ItemList list = ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID);
         Item item = ItemProvider.getInstance().getItemById(m_itemId);

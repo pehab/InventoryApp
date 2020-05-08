@@ -1,3 +1,9 @@
+/*
+ * Copyright 2020 Peter Haberland
+ *
+ * No licensing, you may use/alter that code as you wish.
+ */
+
 package de.phaberland.inventoryApp.frontend;
 
 import android.content.Context;
@@ -7,14 +13,35 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+/**
+ * OnSwipeTouchListener is a special OnTouchListener
+ * which calculates from touches if the user swiped
+ * left or right.
+ * When using this class onSwipeLeft and
+ * onSwipeRight need to be implemented.
+ *
+ * @author      Peter Haberland
+ * @version     %I%, %G%
+ */
 class OnSwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;
 
+    /**
+     * creates a new instance of a GestureDetector and assigns
+     * it to the member
+     * @param ctx context to be forwarded to GestureDetector
+     */
     OnSwipeTouchListener(Context ctx){
         gestureDetector = new GestureDetector(ctx, new GestureListener());
     }
 
+    /**
+     * checks the touch event and detects gestures and clicks
+     * @param v a view that was touched
+     * @param event the touch event
+     * @return the result of onTouchEvent from GestureDetector
+     */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -23,6 +50,10 @@ class OnSwipeTouchListener implements OnTouchListener {
         return gestureDetector.onTouchEvent(event);
     }
 
+    /**
+     * inner class used to decide if a touch event was a swipe
+     * and tries to determine if it was a right or left swipe.
+     */
     private final class GestureListener extends SimpleOnGestureListener {
 
         private static final int SWIPE_THRESHOLD = 100;
@@ -57,7 +88,15 @@ class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
+    /**
+     * needs to be implemented in instance.
+     * User swiped right.
+     */
     void onSwipeRight() { }
 
+    /**
+     * needs to be implemented in instance.
+     * User swiped left.
+     */
     void onSwipeLeft() { }
 }
