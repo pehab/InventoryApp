@@ -22,7 +22,6 @@
     <string name="label_crit">Critical amount</string>
     <string name="label_optional">(optional)</string>
 
-    <string name="msg_no_items">NO ITEMS AVAILABLE YET</string>
     <string name="msg_replace_values">Item already exists, you want to replace Default and Critical Values?</string>
     <string name="msg_are_your_sure">Are you sure?</string>
 

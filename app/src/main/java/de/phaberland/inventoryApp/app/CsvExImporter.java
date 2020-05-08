@@ -4,7 +4,7 @@
  * No licensing, you may use/alter that code as you wish.
  */
 
-package de.phaberland.inventoryApp.App;
+package de.phaberland.inventoryApp.app;
 
 import android.content.Context;
 import android.os.Environment;
@@ -19,10 +19,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemList;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Data.ListProvider;
+import de.phaberland.inventoryApp.data.Item;
+import de.phaberland.inventoryApp.data.ItemList;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.data.ListProvider;
 
 /**
  * CsvExImporter is used to save and load

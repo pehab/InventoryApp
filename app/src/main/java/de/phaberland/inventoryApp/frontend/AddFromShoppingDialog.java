@@ -1,4 +1,4 @@
-package de.phaberland.inventoryApp.Frontend;
+package de.phaberland.inventoryApp.frontend;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,24 +9,21 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemProvider;
 import de.phaberland.inventoryApp.R;
+import de.phaberland.inventoryApp.data.ItemList;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.data.ListProvider;
 
-import de.phaberland.inventoryApp.Data.ItemList;
-import de.phaberland.inventoryApp.Data.ListProvider;
-import de.phaberland.inventoryApp.Interfaces.EventCallback;
-
-public class RemoveFromInventoryDialog extends DialogFragment {
-    private int m_itemId;
+public class AddFromShoppingDialog extends DialogFragment {
+    private final int m_itemId;
     private EditText m_text;
-    private EventCallback m_callback;
+    private final MainScreen m_callback;
 
     /////////////////////
     // dialog creation //
     /////////////////////
 
-    public RemoveFromInventoryDialog(EventCallback callback, int id) {
+    public AddFromShoppingDialog(MainScreen callback, int id) {
         m_itemId = id;
         m_callback = callback;
     }
@@ -35,10 +32,10 @@ public class RemoveFromInventoryDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.title_remove_amount);
+        builder.setTitle(R.string.title_add_amount);
 
         // create amount choosing
-        int maxAmount = ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID).getAmountForId(m_itemId);
+        int maxAmount = ItemProvider.getInstance().getItemById(m_itemId).getM_defValue() * 10;
         DialogFragmentProvider.AmountControls controls = DialogFragmentProvider.createAmountChoosing(getActivity(), m_itemId, maxAmount);
         if(controls == null) {return builder.create();}
         m_text = controls.editText;
@@ -60,12 +57,13 @@ public class RemoveFromInventoryDialog extends DialogFragment {
 
     private void handlePositiveButton() {
         ItemList list = ListProvider.getInstance().getListById(ItemList.INVENTORY_LIST_ID);
-        Item item = ItemProvider.getInstance().getItemById(m_itemId);
-        if(!list.hasItem(item)) {
-            return;
+        list.add(ItemProvider.getInstance().getItemById(m_itemId),getAmount());
+
+        list = ListProvider.getInstance().getListById(ItemList.SHOPPING_LIST_ID);
+        if(list.hasItem(ItemProvider.getInstance().getItemById(m_itemId))) {
+            list.remove(m_itemId);
         }
 
-        list.remove(item ,getAmount());
         m_callback.update();
     }
 

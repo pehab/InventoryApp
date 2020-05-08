@@ -3,7 +3,7 @@
  *
  * No licensing, you may use/alter that code as you wish.
  */
-package de.phaberland.inventoryApp.App;
+package de.phaberland.inventoryApp.app;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemProvider;
+import de.phaberland.inventoryApp.data.Item;
+import de.phaberland.inventoryApp.data.ItemProvider;
 import de.phaberland.inventoryApp.R;
 
 /**
@@ -32,7 +32,7 @@ import de.phaberland.inventoryApp.R;
  * @version     %I%, %G%
  */
 public class ItemListAdapter extends ArrayAdapter<Integer> {
-    private List<Integer> m_ids;
+    private final List<Integer> m_ids;
     private int m_selectedItem;
 
     /**

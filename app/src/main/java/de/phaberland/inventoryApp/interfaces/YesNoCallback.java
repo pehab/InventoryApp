@@ -3,7 +3,7 @@
  *
  * No licensing, you may use/alter that code as you wish.
  */
-package de.phaberland.inventoryApp.Interfaces;
+package de.phaberland.inventoryApp.interfaces;
 
 /**
  * YesNoCallback interface is used as callback

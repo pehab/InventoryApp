@@ -4,7 +4,7 @@
  * No licensing, you may use/alter that code as you wish.
  */
 
-package de.phaberland.inventoryApp.App;
+package de.phaberland.inventoryApp.app;
 
 
 import android.Manifest;
@@ -15,9 +15,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import de.phaberland.inventoryApp.BuildConfig;
-import de.phaberland.inventoryApp.Data.ItemList;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Data.ListProvider;
+import de.phaberland.inventoryApp.data.ItemList;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.data.ListProvider;
 
 /**
  * InventoryApp is the main class of the InventoryApplication.
@@ -36,7 +36,7 @@ public class InventoryApp {
         int currentSelectedList;
     }
     private static AppState m_appState;
-    private Activity m_activity;
+    private final Activity m_activity;
 
     /**
      * Constucts the InventoryApp object.
@@ -153,7 +153,7 @@ public class InventoryApp {
      * @see #checkPermission(String)
      * @see CsvExImporter#exportCsvToDownloads()
      */
-    public boolean exportCsv() {
+    private boolean exportCsv() {
         if(checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return CsvExImporter.exportCsvToDownloads();
         }

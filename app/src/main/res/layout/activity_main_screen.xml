@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.phaberland.inventoryApp.Frontend.MainScreen">
+    tools:context="de.phaberland.inventoryApp.frontend.MainScreen">
 
     <LinearLayout
         android:id="@+id/mainLayout"
@@ -31,7 +31,6 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/desc_settings"
-                android:onClick="settingsButtonPressed"
                 app:layout_constraintDimensionRatio="1:1"
                 app:srcCompat="@android:drawable/ic_menu_preferences" />
 
@@ -45,7 +44,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:onClick="inventoryButtonPressed"
                 android:text="@string/button_inv"
                 app:layout_constraintEnd_toStartOf="@+id/shoppingButton"
                 app:layout_constraintStart_toEndOf="@+id/settingsButton"
@@ -61,7 +59,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:onClick="shoppingButtonPressed"
                 android:text="@string/button_shop"
                 app:layout_constraintBaseline_toBaselineOf="@+id/inventoryButton"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,6 +84,7 @@
                 android:layout_marginBottom="16dp"
                 android:ems="10"
                 android:hint="@string/label_filter"
+                android:autofillHints="@string/label_filter"
                 android:inputType="textPersonName" />
 
             <Button
@@ -99,7 +97,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:onClick="addButtonPressed"
                 android:text="@string/desc_addItem"
                 app:layout_constraintBaseline_toBaselineOf="@+id/inventoryButton"
                 app:layout_constraintEnd_toEndOf="parent"

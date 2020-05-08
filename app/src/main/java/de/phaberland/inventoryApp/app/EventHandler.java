@@ -3,20 +3,20 @@
  *
  * No licensing, you may use/alter that code as you wish.
  */
-package de.phaberland.inventoryApp.App;
+package de.phaberland.inventoryApp.app;
 
 import android.content.Context;
 import android.view.View;
 
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemList;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Data.ListProvider;
-import de.phaberland.inventoryApp.Frontend.AddFromShoppingDialog;
-import de.phaberland.inventoryApp.Frontend.DialogFragmentProvider;
-import de.phaberland.inventoryApp.Frontend.MainScreen;
-import de.phaberland.inventoryApp.Frontend.RemoveFromInventoryDialog;
-import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
+import de.phaberland.inventoryApp.data.Item;
+import de.phaberland.inventoryApp.data.ItemList;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.data.ListProvider;
+import de.phaberland.inventoryApp.frontend.AddFromShoppingDialog;
+import de.phaberland.inventoryApp.frontend.DialogFragmentProvider;
+import de.phaberland.inventoryApp.frontend.MainScreen;
+import de.phaberland.inventoryApp.frontend.RemoveFromInventoryDialog;
+import de.phaberland.inventoryApp.interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
 
 /**
@@ -60,7 +60,7 @@ public class EventHandler implements View.OnClickListener, YesNoCallback {
         public MainScreen m_mainScreen;
     }
 
-    private EventHandlerParams m_params;
+    private final EventHandlerParams m_params;
 
     /**
      * constructs an instance of EventHandler which can than be used as

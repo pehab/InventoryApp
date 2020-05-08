@@ -4,7 +4,7 @@
  * No licensing, you may use/alter that code as you wish.
  */
 
-package de.phaberland.inventoryApp.Frontend;
+package de.phaberland.inventoryApp.frontend;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -27,16 +28,15 @@ import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 
-import de.phaberland.inventoryApp.App.EventHandler;
-import de.phaberland.inventoryApp.App.InventoryApp;
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemList;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Data.ListProvider;
-import de.phaberland.inventoryApp.Interfaces.EventCallback;
+import de.phaberland.inventoryApp.app.EventHandler;
+import de.phaberland.inventoryApp.app.InventoryApp;
+import de.phaberland.inventoryApp.data.Item;
+import de.phaberland.inventoryApp.data.ItemList;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.data.ListProvider;
 import de.phaberland.inventoryApp.R;
 
-public class MainScreen extends AppCompatActivity implements EventCallback {
+public class MainScreen extends AppCompatActivity implements View.OnClickListener {
     private ScrollView m_list;
     private InventoryApp m_app;
     private String m_filter;
@@ -115,6 +115,12 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         m_list = findViewById(R.id.mainTable);
         m_filter = "";
 
+        Button button = findViewById(R.id.addItemButton);
+        button.setOnClickListener(this);
+        ImageButton settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(this);
+
+
         Button activeButton;
         Button inactiveButton;
         if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
@@ -130,15 +136,17 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         }
         activeButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         activeButton.setActivated(true);
+        activeButton.setOnClickListener(this);
 
         inactiveButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorInactiv));
         inactiveButton.setActivated(false);
+        inactiveButton.setOnClickListener(this);
 
         // show initial list
         updateList();
     }
 
-    void deinit() {
+    private void deinit() {
         m_app.deinit();
     }
 
@@ -146,7 +154,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
     // Handle Button Presses //
     ///////////////////////////
 
-    public void addButtonPressed(View view) {
+    private void addButtonPressed() {
         if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
             m_addToInvDlg = new AddToInventoryDialog(this);
             m_addToInvDlg.show(getSupportFragmentManager(), getString(R.string.tag_add_to_inv_dlg));
@@ -161,14 +169,14 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
      *  - Inventory: activate inventory list
      *  - Shopping: activate shopping list
      */
-    public void settingsButtonPressed(View view) {
+    private void settingsButtonPressed() {
         // Todo: create intent to switch to settings activity
         m_app.importCsv();
 
         Toast.makeText(this.getApplicationContext(), R.string.toast_no_settings, Toast.LENGTH_SHORT).show();
     }
 
-    public void inventoryButtonPressed(View view) {
+    private void inventoryButtonPressed() {
         if(m_app.getActiveList() != 0) {
             // activate inventory button
             Button button = findViewById(R.id.inventoryButton);
@@ -186,7 +194,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         }
     }
 
-    public void shoppingButtonPressed(View view) {
+    private void shoppingButtonPressed() {
         if(m_app.getActiveList() != 1) {
             // activate shopping button
             Button button = findViewById(R.id.shoppingButton);
@@ -211,16 +219,16 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         if(view != null) {
             view.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
                 public void onSwipeRight() {
-                    inventoryButtonPressed(view);
+                    inventoryButtonPressed();
                 }
                 public void onSwipeLeft() {
-                    shoppingButtonPressed(view);
+                    shoppingButtonPressed();
                 }
             });
         }
     }
 
-    View addTextField(String name) {
+    private View addTextField(String name) {
         TableRow.LayoutParams colParams = new TableRow.LayoutParams();
         colParams.setMargins(0, 0, 1, 0);
 
@@ -233,7 +241,7 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         return textField;
     }
 
-    View addButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
+    private View addButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
         TableRow.LayoutParams colParams = new TableRow.LayoutParams();
         colParams.setMargins(0, 0, 1, 0);
 
@@ -351,16 +359,14 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         return tr;
     }
 
-    ////////////////////////////
-    // EventCallback override //
-    ////////////////////////////
+    /////////////////////////////////////
+    // Eventhandler callback functions //
+    /////////////////////////////////////
 
-    @Override
     public void update() {
         updateList();
     }
 
-    @Override
     public void readAddToInvDlgAndUpdate() {
         ListProvider.getInstance().getListById(m_app.getActiveList())
                 .add(ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
@@ -368,11 +374,24 @@ public class MainScreen extends AppCompatActivity implements EventCallback {
         updateList();
     }
 
-    @Override
     public void readAddToShoppingDlgAndUpdate() {
         ListProvider.getInstance().getListById(m_app.getActiveList())
                 .add(ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
         m_addToShopDlg.dismiss();
         updateList();
+    }
+
+    //////////////////////////////
+    // OnClickListener Override //
+    //////////////////////////////
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.addItemButton: addButtonPressed(); break;
+            case R.id.inventoryButton: inventoryButtonPressed(); break;
+            case R.id.shoppingButton: shoppingButtonPressed(); break;
+            case R.id.settingsButton: settingsButtonPressed(); break;
+        }
     }
 }

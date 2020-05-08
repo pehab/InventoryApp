@@ -1,4 +1,4 @@
-package de.phaberland.inventoryApp.Frontend;
+package de.phaberland.inventoryApp.frontend;
 
 import android.content.Context;
 import android.view.GestureDetector;
@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-public class OnSwipeTouchListener implements OnTouchListener {
+class OnSwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;
 
@@ -57,7 +57,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
-    public void onSwipeRight() { }
+    void onSwipeRight() { }
 
-    public void onSwipeLeft() { }
+    void onSwipeLeft() { }
 }

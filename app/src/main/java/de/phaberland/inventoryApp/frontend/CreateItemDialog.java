@@ -1,4 +1,4 @@
-package de.phaberland.inventoryApp.Frontend;
+package de.phaberland.inventoryApp.frontend;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,11 +17,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Interfaces.CreateItemDialogCallback;
+import de.phaberland.inventoryApp.data.Item;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.interfaces.CreateItemDialogCallback;
 
-import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
+import de.phaberland.inventoryApp.interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
 
 public class CreateItemDialog extends DialogFragment implements YesNoCallback {
@@ -32,7 +32,7 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
         CRIT
     }
 
-    private CreateItemDialogCallback m_callback;
+    private final CreateItemDialogCallback m_callback;
     private EditText m_Name;
     private Spinner m_Unit;
     private EditText m_Default;

@@ -1,4 +1,4 @@
-package de.phaberland.inventoryApp.Frontend;
+package de.phaberland.inventoryApp.frontend;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -22,10 +22,10 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.phaberland.inventoryApp.App.ItemListAdapter;
-import de.phaberland.inventoryApp.Data.Item;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Interfaces.YesNoCallback;
+import de.phaberland.inventoryApp.app.ItemListAdapter;
+import de.phaberland.inventoryApp.data.Item;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
 
 public class DialogFragmentProvider {

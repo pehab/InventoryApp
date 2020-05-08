@@ -4,7 +4,7 @@
  * No licensing, you may use/alter that code as you wish.
  */
 
-package de.phaberland.inventoryApp.Data;
+package de.phaberland.inventoryApp.data;
 
 /**
  * Item class is the base Item within the lists.
@@ -29,10 +29,10 @@ public class Item {
         PIECE
     }
     private int m_id;
-    private String m_name;
+    private final String m_name;
     private int m_critValue;
     private int m_defValue;
-    private UNIT m_unit;
+    private final UNIT m_unit;
 
     /**
      * Constructs an instance of an Item.

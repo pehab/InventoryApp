@@ -4,7 +4,7 @@
  * No licensing, you may use/alter that code as you wish.
  */
 
-package de.phaberland.inventoryApp.Data;
+package de.phaberland.inventoryApp.data;
 
 import android.annotation.SuppressLint;
 

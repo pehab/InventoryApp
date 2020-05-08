@@ -4,7 +4,7 @@
  * No licensing, you may use/alter that code as you wish.
  */
 
-package de.phaberland.inventoryApp.Data;
+package de.phaberland.inventoryApp.data;
 
 import java.util.HashMap;
 
@@ -24,8 +24,8 @@ public class ItemList {
     public static final int INVENTORY_LIST_ID = 0;
     public static final int SHOPPING_LIST_ID = 1;
 
-    private int id;
-    private HashMap<Item, Integer> m_content;
+    private final int id;
+    private final HashMap<Item, Integer> m_content;
 
     /**
      * Constructs an instance of an ItemList.

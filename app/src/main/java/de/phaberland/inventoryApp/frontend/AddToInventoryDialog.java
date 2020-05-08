@@ -1,4 +1,4 @@
-package de.phaberland.inventoryApp.Frontend;
+package de.phaberland.inventoryApp.frontend;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,16 +18,16 @@ import androidx.fragment.app.DialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.phaberland.inventoryApp.App.ItemListAdapter;
-import de.phaberland.inventoryApp.Data.ItemProvider;
-import de.phaberland.inventoryApp.Interfaces.CreateItemDialogCallback;
+import de.phaberland.inventoryApp.app.ItemListAdapter;
+import de.phaberland.inventoryApp.data.ItemProvider;
+import de.phaberland.inventoryApp.interfaces.CreateItemDialogCallback;
 import de.phaberland.inventoryApp.R;
 
 
 public class AddToInventoryDialog extends DialogFragment implements CreateItemDialogCallback {
     private int m_itemId = 0;
     private int m_amount;
-    private MainScreen m_callback;
+    private final MainScreen m_callback;
 
     private LinearLayout m_mainLayout;
 

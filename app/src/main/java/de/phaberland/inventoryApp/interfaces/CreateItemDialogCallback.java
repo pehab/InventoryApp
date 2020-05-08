@@ -3,7 +3,7 @@
  *
  * No licensing, you may use/alter that code as you wish.
  */
-package de.phaberland.inventoryApp.Interfaces;
+package de.phaberland.inventoryApp.interfaces;
 
 import android.app.Activity;
 
@@ -11,7 +11,7 @@ import android.app.Activity;
  * CreateItemDialogCallback interface must implement the update method
  * Classes that want to be able to handle the DialogCallbacks.
  * This is used for example by the createItemDialog.
- * @see de.phaberland.inventoryApp.Frontend.CreateItemDialog
+ * @see de.phaberland.inventoryApp.frontend.CreateItemDialog
  *
  * @author      Peter Haberland
  * @version     %I%, %G%
