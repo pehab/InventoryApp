@@ -58,10 +58,11 @@ class CsvExImporter {
      * file resources.
      * Be sure to check permission before calling:
      *  - Manifest.permission.WRITE_EXTERNAL_STORAGE
+     * @param context context the application is running in
      * @return true when successful, false otherwise
      */
-    static boolean exportCsvToDownloads() {
-        File downloadDir = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    static boolean exportCsvToDownloads(Context context) {
+        File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         return export(file, INVENTORY);
     }
@@ -95,10 +96,11 @@ class CsvExImporter {
      * file resources.
      * Be sure to check permission before calling:
      *  - Manifest.permission.READ_EXTERNAL_STORAGE
+     * @param context context the application is running in
      * @return true when successful, false otherwise
      */
-    static boolean importCsvFromDownloads() {
-        File downloadDir = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    static boolean importCsvFromDownloads(Context context) {
+        File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         return importe(file, INVENTORY);
     }

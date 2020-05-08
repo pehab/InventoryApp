@@ -131,11 +131,11 @@ public class InventoryApp {
      * 
      * @return true if the cvs file was read successfully, false otherwise
      * @see #checkPermission(String)
-     * @see CsvExImporter#importCsvFromDownloads() 
+     * @see CsvExImporter#importCsvFromDownloads(android.content.Context)
      */
     public boolean importCsv() {
         if(checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            return CsvExImporter.importCsvFromDownloads();
+            return CsvExImporter.importCsvFromDownloads(m_activity);
         }
         return false;
     }
@@ -151,11 +151,11 @@ public class InventoryApp {
      *
      * @return true if the cvs file was written successfully, false otherwise
      * @see #checkPermission(String)
-     * @see CsvExImporter#exportCsvToDownloads()
+     * @see CsvExImporter#exportCsvToDownloads(android.content.Context)
      */
     private boolean exportCsv() {
         if(checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            return CsvExImporter.exportCsvToDownloads();
+            return CsvExImporter.exportCsvToDownloads(m_activity);
         }
         return false;
     }

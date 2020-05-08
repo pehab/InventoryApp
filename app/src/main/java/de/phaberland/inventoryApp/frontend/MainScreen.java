@@ -8,6 +8,7 @@ package de.phaberland.inventoryApp.frontend;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -26,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.phaberland.inventoryApp.app.EventHandler;
 import de.phaberland.inventoryApp.app.InventoryApp;
@@ -35,6 +37,15 @@ import de.phaberland.inventoryApp.data.ItemProvider;
 import de.phaberland.inventoryApp.data.ListProvider;
 import de.phaberland.inventoryApp.R;
 
+/**
+ * MainScreen is the main Frontend class.
+ * It handles initialization of the backend,
+ * creates the main layout and provides its
+ * functionality, calling the needed dialogs.
+ *
+ * @author      Peter Haberland
+ * @version     %I%, %G%
+ */
 public class MainScreen extends AppCompatActivity implements View.OnClickListener {
     private ScrollView m_list;
     private InventoryApp m_app;
@@ -47,6 +58,13 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     // Activity Lifecycle //
     ////////////////////////
 
+    /**
+     * onCreate overrides the main creation method of Activity.
+     * It loads the main layout, adds Swipe listener to it sets
+     * the TextChangeListener for the List filter.
+     * @param savedInstanceState an instance of a Bundle, not needed here
+     * @see OnSwipeTouchListener
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +90,23 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         });
     }
 
+    /**
+     * onStart is called when the activity get shown
+     * on display. This calls its parent function and init
+     * @see #init()
+     */
     @Override
     protected void onStart() {
         super.onStart();
         init();
     }
 
+    /**
+     * onStop gets called, when the activity get hidden,
+     * like turning of the screen, or putting it in the
+     * background. This calls its parent function and deinit
+     * @see #deinit()
+     */
     @Override
     protected  void onStop() {
         super.onStop();
@@ -88,6 +117,16 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     // init/deinit //
     /////////////////
 
+    /**
+     * initializes members of the MainScreen. Calls
+     * init from InventoryApp and sets up button
+     * states and layouts.
+     * If no items are specified yet it will also
+     * load some predefined items.
+     * @see InventoryApp#init()
+     * @see #setUpInitialButtons()
+     * @see #prepareInitialItems()
+     */
     private void init() {
         // initialize main app
         m_app = new InventoryApp(this);
@@ -95,31 +134,32 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
 
         // possibly load initial item list
         if(ItemProvider.getInstance().getAllItems().isEmpty()) {
-            String[] initialItems = getResources().getStringArray(R.array.initial_items);
-            for(String itemName: initialItems) {
-                String unitIndex =  itemName.substring(0,1);
-                itemName =  itemName.substring(1);
-                Item.UNIT unit;
-                switch (unitIndex) {
-                    case "0": unit = Item.UNIT.GRAMM; break;
-                    case "1": unit = Item.UNIT.MILILITER; break;
-                    default: unit = Item.UNIT.PIECE; break;
-                }
-                ItemProvider.getInstance().addItem(itemName, unit, false);
-            }
-            ItemProvider.getInstance().sortItems();
+            prepareInitialItems();
         }
 
-        // set up initial layout
+        // initialize members
         m_list = findViewById(R.id.mainTable);
         m_filter = "";
 
+        // set this as onClickListeners
         Button button = findViewById(R.id.addItemButton);
         button.setOnClickListener(this);
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(this);
 
+        //set up initial buttons
+        setUpInitialButtons();
 
+        // show initial list
+        updateList();
+    }
+
+    /**
+     * reads from the InventoryApp, which button currently
+     * is active and sets inventory and shopping buttons
+     * accordingly.
+     */
+    private void setUpInitialButtons() {
         Button activeButton;
         Button inactiveButton;
         if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
@@ -140,11 +180,32 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         inactiveButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorInactiv));
         inactiveButton.setActivated(false);
         inactiveButton.setOnClickListener(this);
-
-        // show initial list
-        updateList();
     }
 
+    /**
+     * creates some initial items for the item list,
+     * which are read from R.array.initial_items resource.
+     */
+    private void prepareInitialItems() {
+        String[] initialItems = getResources().getStringArray(R.array.initial_items);
+        for(String itemName: initialItems) {
+            String unitIndex =  itemName.substring(0,1);
+            itemName =  itemName.substring(1);
+            Item.UNIT unit;
+            switch (unitIndex) {
+                case "0": unit = Item.UNIT.GRAMM; break;
+                case "1": unit = Item.UNIT.MILILITER; break;
+                default: unit = Item.UNIT.PIECE; break;
+            }
+            ItemProvider.getInstance().addItem(itemName, unit, false);
+        }
+        ItemProvider.getInstance().sortItems();
+    }
+
+    /**
+     * calls deinit from InventoryApp
+     * @see InventoryApp#deinit()
+     */
     private void deinit() {
         m_app.deinit();
     }
@@ -153,6 +214,14 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     // Handle Button Presses //
     ///////////////////////////
 
+    /**
+     * handles when the add button was pressed.
+     * Depending on the currently active list
+     * either AddToInventoryDialog or AddToShoppingDialog
+     * will be called.
+     * @see AddToInventoryDialog
+     * @see AddToShoppingDialog
+     */
     private void addButtonPressed() {
         if(m_app.getActiveList() == ItemList.INVENTORY_LIST_ID) {
             m_addToInvDlg = new AddToInventoryDialog(this);
@@ -163,20 +232,25 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    /* button handling area Buttons in main screen are:
-     *  - Settings: used to manage item/recipes list and hold the impressing
-     *  - Inventory: activate inventory list
-     *  - Shopping: activate shopping list
+    /**
+     * handles a press of the Settings button.
+     * This will call a SettingsDialog.
      */
     private void settingsButtonPressed() {
-        // Todo: create intent to switch to settings activity
+        // Todo: create SettingsDialog
         m_app.importCsv();
 
         Toast.makeText(this.getApplicationContext(), R.string.toast_no_settings, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * handles a press of the inventory button.
+     * If the current list is not Inventory,
+     * the marking of the buttons will get switched
+     * and the active list will be set to Inventory
+     */
     private void inventoryButtonPressed() {
-        if(m_app.getActiveList() != 0) {
+        if(m_app.getActiveList() != ItemList.INVENTORY_LIST_ID) {
             // activate inventory button
             Button button = findViewById(R.id.inventoryButton);
             button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -193,8 +267,14 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * handles a press of the shopping button.
+     * If the current list is not Shopping,
+     * the marking of the buttons will get switched
+     * and the active list will be set to Shopping
+     */
     private void shoppingButtonPressed() {
-        if(m_app.getActiveList() != 1) {
+        if(m_app.getActiveList() != ItemList.SHOPPING_LIST_ID) {
             // activate shopping button
             Button button = findViewById(R.id.shoppingButton);
             button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -214,6 +294,11 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     // List draws //
     ////////////////
 
+    /**
+     * will add an isntance of OnSwipeListener to
+     * the provided view.
+     * @param view the view to which to add the listener
+     */
     private void addSwipeListener(final View view) {
         if(view != null) {
             view.setOnTouchListener(new OnSwipeTouchListener(MainScreen.this) {
@@ -227,7 +312,13 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private View addTextField(String name) {
+    /**
+     * create a TextView with given name.
+     * Sets layout and swipeListener.
+     * @param name name to display in the textfield
+     * @return the created textfield
+     */
+    private View createTextField(String name) {
         TableRow.LayoutParams colParams = new TableRow.LayoutParams();
         colParams.setMargins(0, 0, 1, 0);
 
@@ -240,7 +331,17 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         return textField;
     }
 
-    private View addButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
+    /**
+     * Creates a button with the given text
+     * adding the Eventhandler to the button
+     * and setting the layout.
+     * @param mode Eventhandler mode to run in
+     * @param itemId id of the item related to the button
+     * @param txt text to display on the button
+     * @return the created button
+     * @see EventHandler
+     */
+    private View createButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
         TableRow.LayoutParams colParams = new TableRow.LayoutParams();
         colParams.setMargins(0, 0, 1, 0);
 
@@ -259,9 +360,11 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         return button;
     }
 
-    /* updateList
-     * this function will get the list, that should be displayed from the app
-     * depending on the mode we are in it will show the filtered lists
+    /**
+     * gets the list of items to display filtered
+     * for m_filter from the ListProvider and calls the
+     * function to set up the table.
+     * @see #createTable(ItemList)
      */
     private void updateList() {
         ItemList listToDisplay = ListProvider.getInstance().getFilteredList(m_app.getActiveList(), m_filter);
@@ -273,6 +376,19 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
             return;
         }
 
+        createTable(listToDisplay);
+    }
+
+    /**
+     * creates a table displaying the provided list.
+     * depending on the active list, for each entry
+     * createInventoryEntry or createShoppingEntry
+     * will be called.
+     * @param listToDisplay the list to show in the table
+     * @see #createInventoryEntry(Item, int) 
+     * @see #createShoppingEntry(Item)
+     */
+    private void createTable(ItemList listToDisplay) {
         TableLayout table = new TableLayout(this);
 
         TableLayout.LayoutParams lpTable = new TableLayout.LayoutParams(
@@ -303,17 +419,22 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         m_list.addView(table);
     }
 
-    /* createInventoryEntry
-     * this function will create a view containing the item name, amount and a +/- button
-     * to change the amount
+    /**
+     * creates a TableRow containing Name of an item,
+     * the current amount of the item in the inventory
+     * list and button to be able to remove some amount
+     * from the inventory.
+     * @param item the item to display in the table entry
+     * @param amount amount of the item available in inventory
+     * @return a TableRow containing the entry information
+     * @see #createButton(EventHandler.EventHandlerMode, int, String) 
+     * @see #createTextField(String)
      */
     private TableRow createInventoryEntry(Item item, int amount) {
         TableRow tr = new TableRow(this);
 
         TableLayout.LayoutParams rowParams = new TableLayout.LayoutParams();
-
         rowParams.setMargins(0, 0, 0, 1);
-
         tr.setLayoutParams(rowParams);
 
         if(item.getM_critValue() >= amount) {
@@ -321,39 +442,39 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         }
 
         // add name of item
-        tr.addView(addTextField(item.getM_name() +
-                " (" + item.getM_unit().toString() + ")"));
-
+        tr.addView(createTextField(item.getM_name() + " (" + item.getM_unit().toString() + ")"));
         // add amount of item
-        tr.addView(addTextField(String.format(getResources().getConfiguration().locale,"%d", amount)));
-
+        tr.addView(createTextField(String.format(Locale.getDefault(),"%d", amount)));
         // add +/- button
-        tr.addView(addButton(EventHandler.EventHandlerMode.INVENTORYLISTCLICK, item.getM_id(), getString(R.string.button_add_remove)));
+        tr.addView(createButton(EventHandler.EventHandlerMode.INVENTORYLISTCLICK, item.getM_id(), getString(R.string.button_add_remove)));
+
+        getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
         return tr;
     }
 
-    /* createShoppingEntry
-     * this function will create a view containing the item name, an ok button, which will
-     * add the default amount to the inventory and a button to set a specific amount
+    /**
+     * creates a TableRow containing Name of an item,
+     * a button to remove the item from the shopping list
+     * and a button to add some amount to the inventory.
+     * @param item the item to display in the table entry
+     * @return a TableRow containing the entry information
+     * @see #createButton(EventHandler.EventHandlerMode, int, String)
+     * @see #createTextField(String)
      */
     private TableRow createShoppingEntry(Item item) {
         TableRow tr = new TableRow(this);
 
         TableLayout.LayoutParams rowParams = new TableLayout.LayoutParams();
-
         rowParams.setMargins(0, 0, 0, 1);
-
         tr.setLayoutParams(rowParams);
 
         // add name of item
-        tr.addView(addTextField(item.getM_name()));
-
+        tr.addView(createTextField(item.getM_name()));
         // add remove button
-        tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICK, item.getM_id(), getString(R.string.button_remove)));
-
+        tr.addView(createButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICK, item.getM_id(), getString(R.string.button_remove)));
         // add add button
-        tr.addView(addButton(EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK, item.getM_id(), getString(R.string.button_add)));
+        tr.addView(createButton(EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK, item.getM_id(), getString(R.string.button_add)));
 
         return tr;
     }
@@ -362,10 +483,20 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     // Eventhandler callback functions //
     /////////////////////////////////////
 
+    /**
+     * public function to call updateList
+     * @see #updateList()
+     */
     public void update() {
         updateList();
     }
 
+    /**
+     * add the information aquired from AddToInventoryDialog
+     * to the ListProvider and triggers an update of the list
+     * @see AddToInventoryDialog
+     * @see #updateList()
+     */
     public void readAddToInvDlgAndUpdate() {
         ListProvider.getInstance().getListById(m_app.getActiveList())
                 .add(ItemProvider.getInstance().getItemById(m_addToInvDlg.getItemId()), m_addToInvDlg.getAmount());
@@ -373,6 +504,12 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         updateList();
     }
 
+    /**
+     * add the information aquired from AddToShoppingDialog
+     * to the ListProvider and triggers an update of the list
+     * @see AddToShoppingDialog
+     * @see #updateList()
+     */
     public void readAddToShoppingDlgAndUpdate() {
         ListProvider.getInstance().getListById(m_app.getActiveList())
                 .add(ItemProvider.getInstance().getItemById(m_addToShopDlg.getItemId()), 0);
@@ -384,6 +521,15 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     // OnClickListener Override //
     //////////////////////////////
 
+    /**
+     * depending on the id of the button clicked
+     * calls the corresponding click handling function
+     * @param v the button that was clicked
+     * @see #addButtonPressed()
+     * @see #inventoryButtonPressed()
+     * @see #shoppingButtonPressed()
+     * @see #settingsButtonPressed()
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
