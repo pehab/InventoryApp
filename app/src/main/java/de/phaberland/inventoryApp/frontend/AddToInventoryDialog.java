@@ -1,6 +1,11 @@
+/*
+ * Copyright 2020 Peter Haberland
+ *
+ * No licensing, you may use/alter that code as you wish.
+ */
+
 package de.phaberland.inventoryApp.frontend;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,6 +19,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +29,19 @@ import de.phaberland.inventoryApp.data.ItemProvider;
 import de.phaberland.inventoryApp.interfaces.CreateItemDialogCallback;
 import de.phaberland.inventoryApp.R;
 
-
+/**
+ * AddToInventoryDialog will create a dialog using item
+ * choosing component and amount choosing component.
+ * The selected item, with the selected amount will be
+ * added to the inventory list.
+ *
+ * @author      Peter Haberland
+ * @version     %I%, %G%
+ * @see DialogFragmentProvider#createItemSelection(FragmentActivity, CreateItemDialog)
+ * @see DialogFragmentProvider#createAmountChoosing(FragmentActivity, int, int)
+ */
 public class AddToInventoryDialog extends DialogFragment implements CreateItemDialogCallback {
     private int m_itemId = 0;
-    private int m_amount;
     private final MainScreen m_callback;
 
     private LinearLayout m_mainLayout;
@@ -34,7 +49,6 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
     private LinearLayout m_AmountLayout;
     private EditText m_text;
 
-    private LinearLayout m_ItemLayout;
     private ListView m_itemList;
     private CreateItemDialog m_createItemDlg;
 
@@ -42,6 +56,14 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
         m_callback = callback;
     }
 
+    /**
+     * Creates a main layout and adds an item selection
+     * component to it.
+     * Also adds an initial amount choosing components.
+     *
+     * @param savedInstanceState parameter not used here
+     * @return returns the created dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -58,8 +80,7 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
         m_createItemDlg = new CreateItemDialog(this);
 
         // create item selection
-        createItemSelection();
-        m_mainLayout.addView(m_ItemLayout);
+        m_mainLayout.addView(createItemSelection());
 
         // create initial amount
         createAmountChoosing();
@@ -70,7 +91,6 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
         // set buttonss
         builder.setPositiveButton(R.string.button_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                m_amount = Integer.parseInt(m_text.getText().toString());
                 if(m_callback != null) {
                     m_callback.readAddToInvDlgAndUpdate();
                 }
@@ -87,10 +107,19 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
     // Creation helpers //
     //////////////////////
 
-    private void createItemSelection() {
+    /**
+     * Calls the item selection creation in DialogFragmentProvider.
+     * Saves the resulting components and sets the OnClickListener
+     * to the ListView. This OnClickListener, will refresh the
+     * amount selection depending on the unit of the selected
+     * item.
+     *
+     * @return a LinearLayout containing the Item selection
+     * @see DialogFragmentProvider#createItemSelection(FragmentActivity, CreateItemDialog)
+     */
+    private LinearLayout createItemSelection() {
         final DialogFragmentProvider.ItemControls controls = DialogFragmentProvider.createItemSelection(getActivity(),m_createItemDlg);
 
-        m_ItemLayout = controls.layout;
         m_itemList = controls.listView;
 
         m_itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,8 +136,14 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
                 m_mainLayout.addView(m_AmountLayout);
             }
         });
+        return controls.layout;
     }
 
+    /**
+     * Calls the amount choosing creation in DialogFragmentProvider.
+     * Saves the resulting components.
+     * @see DialogFragmentProvider#createAmountChoosing(FragmentActivity, int, int)
+     */
     private void createAmountChoosing() {
         int maxAmount = ItemProvider.getInstance().getItemById(m_itemId).getM_defValue() * 10;
         DialogFragmentProvider.AmountControls controls = DialogFragmentProvider.createAmountChoosing(getActivity(), m_itemId, maxAmount);
@@ -127,13 +162,20 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
     }
 
     int getAmount() {
-        return m_amount;
+        return Integer.parseInt(m_text.getText().toString());
     }
 
     ////////////////////////
     // Interface Override //
     ////////////////////////
 
+    /**
+     * Updates the listView with the possibly changed list
+     * and sets the item in the parameter as selected.
+     * Also changes the amount selection depending on the
+     * unit of the currently selected item.
+     * @param newItemId id of the new item
+     */
     @Override
     public void update(int newItemId) {
         List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItems().keySet());
@@ -148,8 +190,4 @@ public class AddToInventoryDialog extends DialogFragment implements CreateItemDi
         m_mainLayout.addView(m_AmountLayout);
     }
 
-    @Override
-    public Activity getHostingActivity() {
-        return m_callback;
-    }
 }

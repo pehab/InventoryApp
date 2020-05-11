@@ -1,6 +1,11 @@
+/*
+ * Copyright 2020 Peter Haberland
+ *
+ * No licensing, you may use/alter that code as you wish.
+ */
+
 package de.phaberland.inventoryApp.frontend;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,6 +17,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +27,18 @@ import de.phaberland.inventoryApp.data.ItemProvider;
 import de.phaberland.inventoryApp.interfaces.CreateItemDialogCallback;
 import de.phaberland.inventoryApp.R;
 
-
+/**
+ * AddToShoppingDialog is used to add items to the shopping list.
+ * An item selection will be added, to specify the item that
+ * should be added.
+ *
+ * @author      Peter Haberland
+ * @version     %I%, %G%
+ */
 public class AddToShoppingDialog extends DialogFragment implements CreateItemDialogCallback {
     private int m_itemId = 0;
     private final MainScreen m_callback;
 
-    private LinearLayout m_ItemLayout;
     private ListView m_itemList;
     private CreateItemDialog m_createItemDlg;
 
@@ -34,6 +46,13 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
         m_callback = callback;
     }
 
+    /**
+     * Creates a main layout and adds an item selection
+     * component to it.
+     *
+     * @param savedInstanceState parameter not used here
+     * @return returns the created dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -45,8 +64,7 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
         m_createItemDlg = new CreateItemDialog(this);
 
         // create item selection
-        createItemSelection();
-        builder.setView(m_ItemLayout);
+        builder.setView(createItemSelection());
 
         // set buttonss
         builder.setPositiveButton(R.string.button_add, new DialogInterface.OnClickListener() {
@@ -67,10 +85,17 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
     // Creation helpers //
     //////////////////////
 
-    private void createItemSelection() {
+    /**
+     * Calls the item selection creation in DialogFragmentProvider.
+     * Saves the resulting components and sets the OnClickListener
+     * to the ListView.
+     *
+     * @return a LinearLayout containing the Item selection
+     * @see DialogFragmentProvider#createItemSelection(FragmentActivity, CreateItemDialog)
+     */
+    private LinearLayout createItemSelection() {
         final DialogFragmentProvider.ItemControls controls = DialogFragmentProvider.createItemSelection(getActivity(),m_createItemDlg);
 
-        m_ItemLayout = controls.layout;
         m_itemList = controls.listView;
 
         m_itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,11 +109,13 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
                 controls.adapter.notifyDataSetChanged();
             }
         });
+        return controls.layout;
     }
 
     /////////////
     // getters //
     /////////////
+
     int getItemId() {
         return m_itemId;
     }
@@ -97,6 +124,11 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
     // Interface Override //
     ////////////////////////
 
+    /**
+     *Updates the listView with the possibly changed list
+     * and sets the item in the parameter as selected.
+     * @param newItemId id of the new item
+     */
     @Override
     public void update(int newItemId) {
         List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItems().keySet());
@@ -108,8 +140,4 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
         m_itemList.setSelection(newItemId);
     }
 
-    @Override
-    public Activity getHostingActivity() {
-        return m_callback;
-    }
 }

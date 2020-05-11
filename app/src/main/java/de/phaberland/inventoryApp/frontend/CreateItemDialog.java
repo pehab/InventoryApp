@@ -1,21 +1,19 @@
+/*
+ * Copyright 2020 Peter Haberland
+ *
+ * No licensing, you may use/alter that code as you wish.
+ */
+
 package de.phaberland.inventoryApp.frontend;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import de.phaberland.inventoryApp.data.Item;
 import de.phaberland.inventoryApp.data.ItemProvider;
@@ -24,19 +22,15 @@ import de.phaberland.inventoryApp.interfaces.CreateItemDialogCallback;
 import de.phaberland.inventoryApp.interfaces.YesNoCallback;
 import de.phaberland.inventoryApp.R;
 
+/**
+ * CreateItemDialog will be
+ *
+ * @author      Peter Haberland
+ * @version     %I%, %G%
+ */
 public class CreateItemDialog extends DialogFragment implements YesNoCallback {
-    private enum DialogPart {
-        NAME,
-        UNIT,
-        DEFAULT,
-        CRIT
-    }
-
     private final CreateItemDialogCallback m_callback;
-    private EditText m_Name;
-    private Spinner m_Unit;
-    private EditText m_Default;
-    private EditText m_Crit;
+    private DialogFragmentProvider.EditControls m_controls;
 
     CreateItemDialog(CreateItemDialogCallback callback) {
         m_callback = callback;
@@ -46,6 +40,14 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
     // dialog creation //
     /////////////////////
 
+    /**
+     * Creates a Dialog using DialogFragmentProvider
+     * containing item edit controls to create a new
+     * item.
+     * @param savedInstanceState not used here
+     * @return a dialog to create an item
+     * @see DialogFragmentProvider#createItemEdit(FragmentActivity)
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,16 +55,8 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
         builder.setTitle(R.string.title_new_item);
 
         // set up main layout
-        LinearLayout mainLayout = new LinearLayout(getActivity());
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-
-        builder.setView(mainLayout);
-
-        // create all necessary parts
-        for(DialogPart part : DialogPart.values()) {
-            LinearLayout partLayout = createDialogPart(part);
-            mainLayout.addView(partLayout);
-        }
+        m_controls = DialogFragmentProvider.createItemEdit(getActivity());
+        builder.setView(m_controls.layout);
 
         // add ok, button
         builder.setPositiveButton(R.string.button_add, new DialogInterface.OnClickListener() {
@@ -78,104 +72,40 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
         return builder.create();
     }
 
-    private LinearLayout createDialogPart(DialogPart part) {
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.HORIZONTAL);
-        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(16,16,16,16);
-        layout.setLayoutParams(params);
-
-        // initialize labels and values
-        String textLabel = "";
-
-        switch (part) {
-            case NAME: textLabel = getString(R.string.label_name); break;
-            case UNIT: textLabel = getString(R.string.label_unit); break;
-            case DEFAULT: textLabel = getString(R.string.label_default) + "" + getString(R.string.label_optional); break;
-            case CRIT: textLabel = getString(R.string.label_crit) + "" + getString(R.string.label_optional); break;
-        }
-
-        // add label
-        TextView labelText = new TextView(getContext());
-        labelText.setText(textLabel);
-        labelText.setGravity(Gravity.CENTER);
-        layout.addView(labelText);
-
-        // add value choosing part
-        View valuePart = createValuePart(part);
-        layout.addView(valuePart);
-
-        return layout;
-    }
-
-    private View createValuePart(DialogPart part) {
-        LinearLayout valueView = new LinearLayout(getContext());
-        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(16,16,16,16);
-        valueView.setLayoutParams(params);
-        valueView.setGravity(Gravity.END);
-        switch (part) {
-            case NAME: {
-                m_Name = new EditText(getContext());
-                valueView.addView(m_Name);
-                break;
-            }
-            case DEFAULT: {
-                m_Default = new EditText(getContext());
-                m_Default.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                valueView.addView(m_Default);
-                break;
-            }
-            case CRIT: {
-                m_Crit = new EditText(getContext());
-                m_Crit.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                valueView.addView(m_Crit);
-                break;
-            }
-            case UNIT: {
-                m_Unit = new Spinner(getContext());
-                ArrayAdapter<Item.UNIT> adapter = new ArrayAdapter<>(m_callback.getHostingActivity(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, Item.UNIT.values());
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                m_Unit.setAdapter(adapter);
-                valueView.addView(m_Unit);
-                break;
-            }
-        }
-
-        return valueView;
-    }
-
     ///////////////////
     // eventhandling //
     ///////////////////
 
+    /**
+     * checks if the item specified already exists.
+     * If the item specified by name and unit is already
+     * defined the user will be asked if the values should be
+     * updated, if not the item will be created with the
+     * specified values.
+     */
     private void handlePositiveButton() {
-        Item.UNIT unit = Item.UNIT.values()[m_Unit.getSelectedItemPosition()];
-        String name = m_Name.getText().toString();
-        String txt = m_Default.getText().toString();
-        int def = -1;
-        if(!txt.isEmpty()) {
-            def = Integer.parseInt(txt);
-        }
-        int crit = -1;
-        txt = m_Crit.getText().toString();
-        if(!txt.isEmpty()) {
-            crit = Integer.parseInt(txt);
-        }
+        Item.UNIT unit = Item.UNIT.values()[m_controls.unit.getSelectedItemPosition()];
+        String name = m_controls.name.getText().toString();
+
         int m_existingItemId = ItemProvider.getInstance().findExistingItem(name, unit);
         Item item;
         if(m_existingItemId == -1) {
             m_existingItemId = ItemProvider.getInstance().addItem(name, unit);
             item = ItemProvider.getInstance().getItemById(m_existingItemId);
-            if(def != -1) {
-                item.setM_defValue(def);
-            }
-            if(crit != -1) {
-                item.setM_critValue(crit);
-            }
+            setItemValues(item);
         } else {
             item = ItemProvider.getInstance().getItemById(m_existingItemId);
+
+            String txt = m_controls.def.getText().toString();
+            int def = -1;
+            if(!txt.isEmpty()) {
+                def = Integer.parseInt(txt);
+            }
+            int crit = -1;
+            txt = m_controls.crit.getText().toString();
+            if(!txt.isEmpty()) {
+                crit = Integer.parseInt(txt);
+            }
 
             if((crit != -1 || def != -1) &&
                     (item.getM_critValue() != crit || item.getM_defValue() != def)) {
@@ -191,27 +121,49 @@ public class CreateItemDialog extends DialogFragment implements YesNoCallback {
         }
     }
 
+    /**
+     * gets the item specified and calls
+     * setItemValues for it.
+     * @see #setItemValues(Item)
+     */
     @Override
     public void yesClicked() {
-        Item.UNIT unit = Item.UNIT.values()[m_Unit.getSelectedItemPosition()];
-        String name = m_Name.getText().toString();
+        Item.UNIT unit = Item.UNIT.values()[m_controls.unit.getSelectedItemPosition()];
+        String name = m_controls.name.getText().toString();
         Item item = ItemProvider.getInstance().getItemById(ItemProvider.getInstance().findExistingItem(name, unit));
-        String txt = m_Default.getText().toString();
+
+        setItemValues(item);
+    }
+
+    ////////////
+    // helper //
+    ////////////
+
+    /**
+     * sets crit and default values specified in the
+     * dialog to the given item.
+     * @param item the item to set values to.
+     */
+    private void setItemValues(Item item) {
+        // default value
+        String txt = m_controls.def.getText().toString();
         int def = -1;
         if(!txt.isEmpty()) {
             def = Integer.parseInt(txt);
         }
+        if(def != -1) {
+            item.setM_defValue(def);
+        }
+
+        // crit value
         int crit = -1;
-        txt = m_Crit.getText().toString();
+        txt = m_controls.crit.getText().toString();
         if(!txt.isEmpty()) {
             crit = Integer.parseInt(txt);
         }
 
         if(crit != -1) {
             item.setM_critValue(crit);
-        }
-        if(def != -1) {
-            item.setM_defValue(def);
         }
     }
 }
