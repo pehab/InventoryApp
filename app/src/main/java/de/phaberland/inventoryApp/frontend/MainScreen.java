@@ -58,6 +58,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
 
     private AddToInventoryDialog m_addToInvDlg;
     private AddToShoppingDialog m_addToShopDlg;
+    private EditItemDialog m_editItemDlg;
 
     ////////////////////////
     // Activity Lifecycle //
@@ -274,12 +275,13 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         View editLable = createTextField(getString(R.string.label_edit));
         layout.addView(editLable);
 
+        m_editItemDlg = new EditItemDialog(this);
+
         View itemEditButton = createButton(getString(R.string.button_edit_item));
         itemEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: implement item edit
-                Toast.makeText(getApplicationContext(), ("NOT IMPLEMENTED YET"),Toast.LENGTH_SHORT).show();
+                m_editItemDlg.show(getSupportFragmentManager(), getString(R.string.tag_edit_item_dlg));
             }
         });
         layout.addView(itemEditButton);

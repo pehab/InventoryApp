@@ -42,7 +42,8 @@
     <string name="tag_add_to_shop_dlg">AddToShopping</string>
     <string name="tag_new_item_dlg">NewItemDlg</string>
     <string name="tag_remove_item_dlg">RemoveAmountDlg</string>
-    <string name="tag_add_item_dlg">RemoveAmountDlg</string>
+    <string name="tag_add_item_dlg">AddAmountDlg</string>
+    <string name="tag_edit_item_dlg">EditItems</string>
 
     <string name="title_add_to_inventory">Füge Gegenstand zum Inventar hinzu</string>
     <string name="title_add_to_shopping">Füge Gegenstand zur Einkaufliste hinzu</string>
@@ -50,6 +51,7 @@
     <string name="title_remove_amount">Entnehme Gegenstände aus dem Inventar</string>
     <string name="title_add_amount">Füge Menge zum Inventar hinzu</string>
     <string name="title_settings">Einstellungen</string>
+    <string name="title_edit_items">Gegenstand ändern</string>
 
     <string name="toast_switch_inv">Zum Inventar gewechselt</string>
     <string name="toast_switch_shop">Zur Einkaufsliste gewechselt</string>

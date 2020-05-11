@@ -29,10 +29,10 @@ public class Item {
         PIECE
     }
     private int m_id;
-    private final String m_name;
+    private String m_name;
     private int m_critValue;
     private int m_defValue;
-    private final UNIT m_unit;
+    private UNIT m_unit;
 
     /**
      * Constructs an instance of an Item.
@@ -76,6 +76,10 @@ public class Item {
         return m_name;
     }
 
+    public void setM_name(String name) {
+        m_name = name;
+    }
+
     public int getM_critValue() {
         return m_critValue;
     }
@@ -94,6 +98,10 @@ public class Item {
 
     public UNIT getM_unit() {
         return m_unit;
+    }
+
+    public void setM_unit(UNIT unit) {
+        m_unit = unit;
     }
 
     //////////////////////////////////
