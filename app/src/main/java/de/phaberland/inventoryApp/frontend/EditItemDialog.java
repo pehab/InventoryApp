@@ -177,7 +177,7 @@ public class EditItemDialog extends DialogFragment implements YesNoCallback, Cre
      * updates the list of available items after
      * item creation and calls setItemEdit()
      * @param newItemId id of the new item
-     * @see #setItemEdit() 
+     * @see #setItemEdit()
      */
     @Override
     public void update(int newItemId) {

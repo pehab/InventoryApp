@@ -322,6 +322,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_requesting_permission)),Toast.LENGTH_SHORT).show();
                 }
                 if(CsvExImporter.importCsvFromDownloads(getApplicationContext())) {
+                    updateList();
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_import_success)),Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_imported_fail)),Toast.LENGTH_SHORT).show();
