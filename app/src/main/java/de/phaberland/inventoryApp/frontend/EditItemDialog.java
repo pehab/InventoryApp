@@ -56,11 +56,13 @@ public class EditItemDialog extends DialogFragment implements YesNoCallback, Cre
 
     /**
      * Creates a Dialog using DialogFragmentProvider
-     * containing item edit controls to create a new
+     * containing the item selection controlls and
+     * item edit controls to create a new
      * item.
      * @param savedInstanceState not used here
      * @return a dialog to create an item
      * @see DialogFragmentProvider#createItemEdit(FragmentActivity)
+     * @see DialogFragmentProvider#createItemSelection(FragmentActivity, CreateItemDialog)
      */
     @NonNull
     @Override
@@ -99,8 +101,7 @@ public class EditItemDialog extends DialogFragment implements YesNoCallback, Cre
      * Calls the item selection creation in DialogFragmentProvider.
      * Saves the resulting components and sets the OnClickListener
      * to the ListView. This OnClickListener, will refresh the
-     * amount selection depending on the unit of the selected
-     * item.
+     * item edit depending on the selected item.
      *
      * @return a LinearLayout containing the Item selection
      * @see DialogFragmentProvider#createItemSelection(FragmentActivity, CreateItemDialog)
@@ -126,11 +127,7 @@ public class EditItemDialog extends DialogFragment implements YesNoCallback, Cre
     ///////////////////
 
     /**
-     * checks if the item specified already exists.
-     * If the item specified by name and unit is already
-     * defined the user will be asked if the values should be
-     * updated, if not the item will be created with the
-     * specified values.
+     * updates the values of the selected item.
      */
     private void handlePositiveButton() {
         Item item = ItemProvider.getInstance().getItemById(m_itemId);
@@ -176,6 +173,12 @@ public class EditItemDialog extends DialogFragment implements YesNoCallback, Cre
         setItemValues(item);
     }
 
+    /**
+     * updates the list of available items after
+     * item creation and calls setItemEdit()
+     * @param newItemId id of the new item
+     * @see #setItemEdit() 
+     */
     @Override
     public void update(int newItemId) {
         List<Integer> list = new ArrayList<>(ItemProvider.getInstance().getAllItems().keySet());
@@ -220,6 +223,11 @@ public class EditItemDialog extends DialogFragment implements YesNoCallback, Cre
         }
     }
 
+    /**
+     * updates the values in the item edit
+     * component depending on the selected
+     * item.
+     */
     private void setItemEdit() {
         Item item = ItemProvider.getInstance().getItemById(m_itemId);
         if(m_editControls != null) {
