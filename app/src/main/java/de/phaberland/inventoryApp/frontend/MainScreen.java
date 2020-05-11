@@ -6,6 +6,8 @@
 
 package de.phaberland.inventoryApp.frontend;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,9 +29,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 
+import de.phaberland.inventoryApp.app.CsvExImporter;
 import de.phaberland.inventoryApp.app.EventHandler;
 import de.phaberland.inventoryApp.app.InventoryApp;
 import de.phaberland.inventoryApp.data.Item;
@@ -234,13 +239,115 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
 
     /**
      * handles a press of the Settings button.
-     * This will call a SettingsDialog.
+     * This will call a create dialog containing
+     *  - import/export options
+     *  - edit menu
+     *  - impressum
      */
     private void settingsButtonPressed() {
-        // Todo: create SettingsDialog
-        m_app.importCsv();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.title_settings);
 
-        Toast.makeText(this.getApplicationContext(), R.string.toast_no_settings, Toast.LENGTH_SHORT).show();
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        // export import
+        addExportImport(layout);
+
+        // edit
+        addEdit(layout);
+
+        // impressum
+        addImpressum(layout);
+
+        builder.setView(layout);
+
+        builder.show();
+    }
+
+    /**
+     * Will create the editing area, where Items
+     * might be altered.
+     * @param layout the layout to which to add it
+     */
+    private void addEdit(LinearLayout layout) {
+        View editLable = createTextField(getString(R.string.label_edit));
+        layout.addView(editLable);
+
+        View itemEditButton = createButton(getString(R.string.button_edit_item));
+        itemEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: implement item edit
+                Toast.makeText(getApplicationContext(), ("NOT IMPLEMENTED YET"),Toast.LENGTH_SHORT).show();
+            }
+        });
+        layout.addView(itemEditButton);
+    }
+
+    /**
+     * Will add a label for import and export
+     * and buttons to export or import the
+     * application data and setting up the user
+     * feedback.
+     * @param layout the layout to which to add it
+     */
+    private void addExportImport(LinearLayout layout) {
+        View eximportLabel = createTextField(getString(R.string.label_ExImPort));
+        layout.addView(eximportLabel);
+
+        View exportToDownloadButton =  createButton(getString(R.string.button_export_to_download));
+        exportToDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!m_app.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Toast.makeText(getApplicationContext(), (getString(R.string.toast_requesting_permission)),Toast.LENGTH_SHORT).show();
+                }
+                if(CsvExImporter.exportCsvToDownloads(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), (getString(R.string.toast_exported_success)),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), (getString(R.string.toast_exported_fail)),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        layout.addView(exportToDownloadButton);
+
+        View importFromDownloadButton =  createButton(getString(R.string.button_import_from_download));
+        importFromDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!m_app.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Toast.makeText(getApplicationContext(), (getString(R.string.toast_requesting_permission)),Toast.LENGTH_SHORT).show();
+                }
+                if(CsvExImporter.importCsvFromDownloads(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), (getString(R.string.toast_import_success)),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), (getString(R.string.toast_imported_fail)),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        layout.addView(importFromDownloadButton);
+    }
+
+    /**
+     * Will add a Label for impressum and the impressum
+     * itself filled with the information from the app.
+     * @param layout the layout where to add the impressum
+     */
+    private void addImpressum(LinearLayout layout) {
+        View impressumLabel = createTextField(getString(R.string.label_impressum));
+        layout.addView(impressumLabel);
+
+        StringBuilder sbuf = new StringBuilder();
+        Formatter fmt = new Formatter(sbuf);
+        fmt.format(getText(R.string.msg_impressum).toString(),
+                InventoryApp.DISPLAY_VERSION,
+                InventoryApp.VERSION_CODE,
+                InventoryApp.AUTHOR,
+                InventoryApp.EMAIL,
+                InventoryApp.PROJECT_URL);
+        View impressumText = createTextField(sbuf.toString());
+        layout.addView(impressumText);
     }
 
     /**
@@ -332,6 +439,24 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     /**
+     * creates a button for outside the table view.
+     * Basically this function only takes care of the
+     * creation of the button and setting up some basics.
+     *
+     * @param name the name to display on the button
+     * @return a button labeled with the given name
+     */
+    private View createButton(String name) {
+        Button button = new Button(this);
+        button.setText(name);
+        button.setGravity(Gravity.CENTER);
+        button.setPadding(3, 3, 3, 3);
+
+        addSwipeListener(button);
+        return button;
+    }
+
+    /**
      * Creates a button with the given text
      * adding the Eventhandler to the button
      * and setting the layout.
@@ -341,7 +466,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
      * @return the created button
      * @see EventHandler
      */
-    private View createButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
+    private View createListButton(EventHandler.EventHandlerMode mode, int itemId, String txt) {
         TableRow.LayoutParams colParams = new TableRow.LayoutParams();
         colParams.setMargins(0, 0, 1, 0);
 
@@ -427,7 +552,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
      * @param item the item to display in the table entry
      * @param amount amount of the item available in inventory
      * @return a TableRow containing the entry information
-     * @see #createButton(EventHandler.EventHandlerMode, int, String) 
+     * @see #createListButton(EventHandler.EventHandlerMode, int, String)
      * @see #createTextField(String)
      */
     private TableRow createInventoryEntry(Item item, int amount) {
@@ -446,7 +571,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         // add amount of item
         tr.addView(createTextField(String.format(Locale.getDefault(),"%d", amount)));
         // add +/- button
-        tr.addView(createButton(EventHandler.EventHandlerMode.INVENTORYLISTCLICK, item.getM_id(), getString(R.string.button_add_remove)));
+        tr.addView(createListButton(EventHandler.EventHandlerMode.INVENTORYLISTCLICK, item.getM_id(), getString(R.string.button_add_remove)));
 
         getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
@@ -459,7 +584,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
      * and a button to add some amount to the inventory.
      * @param item the item to display in the table entry
      * @return a TableRow containing the entry information
-     * @see #createButton(EventHandler.EventHandlerMode, int, String)
+     * @see #createListButton(EventHandler.EventHandlerMode, int, String)
      * @see #createTextField(String)
      */
     private TableRow createShoppingEntry(Item item) {
@@ -472,9 +597,9 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
         // add name of item
         tr.addView(createTextField(item.getM_name()));
         // add remove button
-        tr.addView(createButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICK, item.getM_id(), getString(R.string.button_remove)));
+        tr.addView(createListButton(EventHandler.EventHandlerMode.SHOPPINGLISTREMOVECLICK, item.getM_id(), getString(R.string.button_remove)));
         // add add button
-        tr.addView(createButton(EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK, item.getM_id(), getString(R.string.button_add)));
+        tr.addView(createListButton(EventHandler.EventHandlerMode.SHOPPINGLISTADDCLICK, item.getM_id(), getString(R.string.button_add)));
 
         return tr;
     }

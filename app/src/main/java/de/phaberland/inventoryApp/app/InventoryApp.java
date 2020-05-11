@@ -30,6 +30,9 @@ import de.phaberland.inventoryApp.data.ListProvider;
 public class InventoryApp {
     public static final String DISPLAY_VERSION = BuildConfig.VERSION_NAME;
     public static final int VERSION_CODE = BuildConfig.VERSION_CODE;
+    public static final String AUTHOR = "Peter Haberland";
+    public static final String EMAIL = "phaberland@googlemail.com";
+    public static final String PROJECT_URL = "https://github.com/pehab/InventoryApp";
 
     static class AppState {
         // todo: add more stuff that we want to save, when exiting the app like settings, user data etc...
@@ -71,12 +74,6 @@ public class InventoryApp {
             m_appState = new AppState();
             m_appState.currentSelectedList = ItemList.INVENTORY_LIST_ID;
         }
-
-        CsvExImporter.importCsvFromCache(m_activity);
-
-        // Todo: move that to when we actually want to ex-/import
-        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     /**
@@ -90,9 +87,6 @@ public class InventoryApp {
     public void deinit() {
         CsvExImporter.exportAppState(m_activity);
         CsvExImporter.exportCsvToCache(m_activity);
-
-        // Todo: once we have the export in settings, remove this
-        exportCsv();
     }
 
     ///////////////////////////////////
@@ -108,7 +102,7 @@ public class InventoryApp {
      * @param permission the string representation of the permission that should be checked.
      * @return true if permission is granted, false otherwise.
      */
-    private boolean checkPermission(String permission) {
+    public boolean checkPermission(String permission) {
         if(ContextCompat.checkSelfPermission(m_activity, permission)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted, request it

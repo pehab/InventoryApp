@@ -37,7 +37,7 @@ import de.phaberland.inventoryApp.data.ListProvider;
  * @author      Peter Haberland
  * @version     %I%, %G%
  */
-class CsvExImporter {
+public class CsvExImporter {
     // how to export
     private static final String FILENAME = "export.csv";
     private static final String APPSTATEFILE = "appState.csv";
@@ -61,7 +61,7 @@ class CsvExImporter {
      * @param context context the application is running in
      * @return true when successful, false otherwise
      */
-    static boolean exportCsvToDownloads(Context context) {
+    public static boolean exportCsvToDownloads(Context context) {
         File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         return export(file, INVENTORY);
@@ -99,7 +99,7 @@ class CsvExImporter {
      * @param context context the application is running in
      * @return true when successful, false otherwise
      */
-    static boolean importCsvFromDownloads(Context context) {
+    public static boolean importCsvFromDownloads(Context context) {
         File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         return importe(file, INVENTORY);

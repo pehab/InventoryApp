@@ -11,6 +11,9 @@
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
     <string name="button_remove">Remove</string>
+    <string name="button_export_to_download">Export to downloads</string>
+    <string name="button_import_from_download">Import from downloads</string>
+    <string name="button_edit_item">Edit items</string>
 
     <string name="desc_settings">Open Settings</string>
     <string name="desc_addItem">add item</string>
@@ -21,9 +24,18 @@
     <string name="label_default">Default shopping amount</string>
     <string name="label_crit">Critical amount</string>
     <string name="label_optional">(optional)</string>
+    <string name="label_ExImPort">Ex-/Import</string>
+    <string name="label_edit">Edit</string>
+    <string name="label_impressum">Impressum</string>
 
     <string name="msg_replace_values">Item already exists, you want to replace Default and Critical Values?</string>
     <string name="msg_are_your_sure">Are you sure?</string>
+    <string name="msg_impressum">
+        version: %s, build number(%d) \n
+        author: %s \n
+        contakt: %s \n
+        project site: %s
+    </string>
 
     <string name="tag_add_to_inv_dlg">AddToInventory</string>
     <string name="tag_add_to_shop_dlg">AddToShopping</string>
@@ -36,10 +48,15 @@
     <string name="title_new_item">Create new Item</string>
     <string name="title_remove_amount">Remove items from inventory</string>
     <string name="title_add_amount">Add Amount</string>
+    <string name="title_settings">Settings</string>
 
     <string name="toast_switch_inv">Switched to inventory</string>
     <string name="toast_switch_shop">Switched to shopping</string>
-    <string name="toast_no_settings">Settings not implemented yet!</string>
+    <string name="toast_exported_success">Successfully exported to downloads</string>
+    <string name="toast_import_success">Successfully imported to downloads</string>
+    <string name="toast_exported_fail">Export to Downloads failed</string>
+    <string name="toast_imported_fail">Import from Downloads failed</string>
+    <string name="toast_requesting_permission">Permission not granted yet, please try again.</string>
 
     <string-array name="initial_items">
         <item>0Flour</item>

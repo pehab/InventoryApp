@@ -12,6 +12,9 @@
     <string name="button_yes">Ja</string>
     <string name="button_no">Nein</string>
     <string name="button_remove">Entfernen</string>
+    <string name="button_export_to_download">Nach Download exportieren</string>
+    <string name="button_import_from_download">Aus Download importieren</string>
+    <string name="button_edit_item">Gegenstände bearbeiten</string>
 
     <string name="desc_settings">Einstellungen öffnen</string>
     <string name="desc_addItem">Gegenstand hinzufügen</string>
@@ -22,9 +25,18 @@
     <string name="label_default">Standard Einkaufsmenge</string>
     <string name="label_crit">Kritische Menge</string>
     <string name="label_optional">(optional)</string>
+    <string name="label_ExImPort">Ex-/Import</string>
+    <string name="label_edit">Bearbeiten</string>
+    <string name="label_impressum">Impressum</string>
 
     <string name="msg_replace_values">Der Gegenstand existiert bereits, wollen sie Kritische oder Default Werte überschreiben?</string>
     <string name="msg_are_your_sure">Sind sie sicher?</string>
+    <string name="msg_impressum">
+        Version: %s, Build Nummer(%d) \n
+        Author: %s \n
+        Kontakt: %s \n
+        Projekt Seite: %s
+    </string>
 
     <string name="tag_add_to_inv_dlg">AddToInventory</string>
     <string name="tag_add_to_shop_dlg">AddToShopping</string>
@@ -37,10 +49,15 @@
     <string name="title_new_item">Erzeuge neuen Gegenstand</string>
     <string name="title_remove_amount">Entnehme Gegenstände aus dem Inventar</string>
     <string name="title_add_amount">Füge Menge zum Inventar hinzu</string>
+    <string name="title_settings">Einstellungen</string>
 
     <string name="toast_switch_inv">Zum Inventar gewechselt</string>
     <string name="toast_switch_shop">Zur Einkaufsliste gewechselt</string>
-    <string name="toast_no_settings">Einstellungen noch nicht implementiert!</string>
+    <string name="toast_exported_success">Erfolgreich nach Downloads exportiert</string>
+    <string name="toast_import_success">Erfolgreich aus Downloads importiert</string>
+    <string name="toast_exported_fail">Export nach Downloads gescheitert</string>
+    <string name="toast_imported_fail">Import aus Downloads gescheitert</string>
+    <string name="toast_requesting_permission">Noch keine Berechtigung, bitte versuchen sie es erneut.</string>
 
     <string-array name="initial_items">
         <item>0Mehl</item>
