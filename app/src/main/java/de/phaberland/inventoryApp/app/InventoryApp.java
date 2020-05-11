@@ -74,6 +74,7 @@ public class InventoryApp {
             m_appState = new AppState();
             m_appState.currentSelectedList = ItemList.INVENTORY_LIST_ID;
         }
+        CsvExImporter.importCsvFromCache(m_activity);
     }
 
     /**
@@ -125,11 +126,11 @@ public class InventoryApp {
      * 
      * @return true if the cvs file was read successfully, false otherwise
      * @see #checkPermission(String)
-     * @see CsvExImporter#importCsvFromDownloads(android.content.Context)
+     * @see CsvExImporter#importCsvFromDownloads()
      */
     public boolean importCsv() {
         if(checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            return CsvExImporter.importCsvFromDownloads(m_activity);
+            return CsvExImporter.importCsvFromDownloads();
         }
         return false;
     }
@@ -145,11 +146,11 @@ public class InventoryApp {
      *
      * @return true if the cvs file was written successfully, false otherwise
      * @see #checkPermission(String)
-     * @see CsvExImporter#exportCsvToDownloads(android.content.Context)
-     */
-    private boolean exportCsv() {
+     * @see CsvExImporter#exportCsvToDownloads()
+     * */
+    public boolean exportCsv() {
         if(checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            return CsvExImporter.exportCsvToDownloads(m_activity);
+            return CsvExImporter.exportCsvToDownloads();
         }
         return false;
     }

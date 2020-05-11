@@ -37,7 +37,7 @@ import de.phaberland.inventoryApp.data.ListProvider;
  * @author      Peter Haberland
  * @version     %I%, %G%
  */
-public class CsvExImporter {
+class CsvExImporter {
     // how to export
     private static final String FILENAME = "export.csv";
     private static final String APPSTATEFILE = "appState.csv";
@@ -58,11 +58,10 @@ public class CsvExImporter {
      * file resources.
      * Be sure to check permission before calling:
      *  - Manifest.permission.WRITE_EXTERNAL_STORAGE
-     * @param context context the application is running in
      * @return true when successful, false otherwise
      */
-    public static boolean exportCsvToDownloads(Context context) {
-        File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+    static boolean exportCsvToDownloads() {
+        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         return export(file, INVENTORY);
     }
@@ -96,11 +95,10 @@ public class CsvExImporter {
      * file resources.
      * Be sure to check permission before calling:
      *  - Manifest.permission.READ_EXTERNAL_STORAGE
-     * @param context context the application is running in
      * @return true when successful, false otherwise
      */
-    public static boolean importCsvFromDownloads(Context context) {
-        File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+    static boolean importCsvFromDownloads() {
+        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, FILENAME);
         return importe(file, INVENTORY);
     }
@@ -217,7 +215,7 @@ public class CsvExImporter {
     private static void writeInventory(OutputStreamWriter streamWriter) throws IOException {
         for(HashMap.Entry<Integer, Item> entry :ItemProvider.getInstance().getAllItems().entrySet()) {
             // item properties  (0->id,1->name,2->unit,3->crit,4->def,5->inv,6->shop)
-            String line = entry.getKey().toString()
+            String line = entry.getValue().getM_id()
                     + "," + entry.getValue().getM_name()
                     + "," + entry.getValue().getM_unit()
                     + "," + entry.getValue().getM_critValue()

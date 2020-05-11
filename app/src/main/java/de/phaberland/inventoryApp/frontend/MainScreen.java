@@ -33,14 +33,13 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 
-import de.phaberland.inventoryApp.app.CsvExImporter;
+import de.phaberland.inventoryApp.R;
 import de.phaberland.inventoryApp.app.EventHandler;
 import de.phaberland.inventoryApp.app.InventoryApp;
 import de.phaberland.inventoryApp.data.Item;
 import de.phaberland.inventoryApp.data.ItemList;
 import de.phaberland.inventoryApp.data.ItemProvider;
 import de.phaberland.inventoryApp.data.ListProvider;
-import de.phaberland.inventoryApp.R;
 
 /**
  * MainScreen is the main Frontend class.
@@ -305,7 +304,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
                 if(!m_app.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_requesting_permission)),Toast.LENGTH_SHORT).show();
                 }
-                if(CsvExImporter.exportCsvToDownloads(getApplicationContext())) {
+                if(m_app.exportCsv()) {
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_exported_success)),Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_exported_fail)),Toast.LENGTH_SHORT).show();
@@ -321,7 +320,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
                 if(!m_app.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_requesting_permission)),Toast.LENGTH_SHORT).show();
                 }
-                if(CsvExImporter.importCsvFromDownloads(getApplicationContext())) {
+                if(m_app.importCsv()) {
                     updateList();
                     Toast.makeText(getApplicationContext(), (getString(R.string.toast_import_success)),Toast.LENGTH_SHORT).show();
                 } else {
