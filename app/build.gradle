@@ -8,7 +8,7 @@ android {
         applicationId "de.phaberland.inventoryApp"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 85
+        versionCode 86
         versionName "0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

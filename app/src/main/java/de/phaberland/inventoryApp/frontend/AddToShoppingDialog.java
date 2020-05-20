@@ -104,8 +104,8 @@ public class AddToShoppingDialog extends DialogFragment implements CreateItemDia
                 if(parent.getItemAtPosition(position) == null) {
                     return;
                 }
-                m_itemId = position;
-                controls.adapter.setSelectedItem(m_itemId);
+                m_itemId = (int)parent.getItemAtPosition(position);
+                controls.adapter.setSelectedItem(position);
                 controls.adapter.notifyDataSetChanged();
             }
         });

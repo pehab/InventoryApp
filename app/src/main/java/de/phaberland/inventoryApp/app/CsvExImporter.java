@@ -295,6 +295,11 @@ class CsvExImporter {
         String receiveString;
         if ( (receiveString = bufferedReader.readLine()) != null ) {
             receiveString = receiveString.trim();
+            // if we have a version of the State.csv with more states, we want to make sure to get the one we need.
+            String[] values = receiveString.split(",");
+            if(values.length > 1) {
+                receiveString = values[0];
+            }
             if(!receiveString.isEmpty()) {
                 state.currentSelectedList = Integer.parseInt(receiveString);
             } else {
